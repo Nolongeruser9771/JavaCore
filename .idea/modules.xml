@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Java core.iml" filepath="$PROJECT_DIR$/.idea/Java core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lesson01-Slide48/Lesson01-Slide48.iml" filepath="$PROJECT_DIR$/Lesson01-Slide48/Lesson01-Slide48.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lesson01-exercise01/Lesson01-exercise01.iml" filepath="$PROJECT_DIR$/Lesson01-exercise01/Lesson01-exercise01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lesson01-exercise02/Lesson01-exercise02.iml" filepath="$PROJECT_DIR$/Lesson01-exercise02/Lesson01-exercise02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lesson01-exercise03/Lesson01-exercise03.iml" filepath="$PROJECT_DIR$/Lesson01-exercise03/Lesson01-exercise03.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lesson01-exercise04/Lesson01-exercise04.iml" filepath="$PROJECT_DIR$/Lesson01-exercise04/Lesson01-exercise04.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lesson01-slide58/Lesson01-slide58.iml" filepath="$PROJECT_DIR$/Lesson01-slide58/Lesson01-slide58.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lesson01-slide61/Lesson01-slide61.iml" filepath="$PROJECT_DIR$/Lesson01-slide61/Lesson01-slide61.iml" />
+    </modules>
+  </component>
+</project>
