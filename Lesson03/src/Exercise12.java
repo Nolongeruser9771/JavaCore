@@ -9,11 +9,10 @@ public class Exercise12 {
 
         System.out.print("Nhập số m (m<n): ");
         int m=new Scanner(System.in).nextInt();
-        int i= (int) Math.sqrt(m);
         int count=0;
 
-        while (m<n){
-            i= (int) Math.sqrt(m);
+        while (m<=n){
+            int i= (int) Math.sqrt(m);
             if(i*i==m) {
                 System.out.print(m +"\t");
                 count++;
