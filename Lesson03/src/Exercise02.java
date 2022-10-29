@@ -10,7 +10,7 @@ public class Exercise02 {
 
         System.out.print("Các ước số của "+n+" là:");
 
-        for(int i=1; i<=(n/2);i++){
+        for(int i=1; i<=n;i++){
             if(n%i == 0) {
                 System.out.print( i + "\t");
                 j++;

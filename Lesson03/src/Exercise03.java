@@ -14,7 +14,7 @@ public class Exercise03 {
         int UC = 0;
         int UCLN = 0;
 
-            for (int i = 1; i <= Math.max(a, b) / 2; i++) {
+            for (int i = 1; i <= Math.max(a, b); i++) {
                 if (a % i == 0 && b % i == 0) {
                     UC = i;
                     System.out.print(UC+"\t");
