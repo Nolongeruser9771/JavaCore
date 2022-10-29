@@ -11,7 +11,7 @@ public class Exercise15 {
         int UC = 0;
         int UCLN = 0;
 
-        for (int i = 1; i < Math.max(m, n); i++) {
+        for (int i = 1; i < Math.min(m, n); i++) {
             if (n % i == 0 && m % i == 0) {
                 UC = i;
             }
