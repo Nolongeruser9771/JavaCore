@@ -19,6 +19,17 @@ public class Book {
         this.bookID = AUTO_BOOKID;
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookID=" + bookID +
+                ", bookName='" + bookName + '\'' +
+                ", author='" + author + '\'' +
+                ", bookTopic='" + bookTopic + '\'' +
+                ", releaseYear=" + releaseYear +
+                '}';
+    }
+
     public void InputBookInfo() {
         System.out.println("Input book name: ");
         this.bookName = new Scanner(System.in).nextLine();
