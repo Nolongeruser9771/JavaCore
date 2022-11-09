@@ -59,13 +59,13 @@ public class Reader extends Person {
 
     switch (readerType) {
         case 1:
-            this.type = "Student";
+            this.type = ReaderConstantType.STUDENT;
             break;
         case 2:
-            this.type = "Graduate Student";
+            this.type = ReaderConstantType.GRADUATE;
             break;
         case 3:
-            this.type = "Graduate Student";
+            this.type = ReaderConstantType.LECTURER;
             break;
     }
 }

@@ -57,16 +57,16 @@ public class Book {
 
         switch (bookTopic) {
             case 1:
-                this.bookTopic = "Natural science";
+                this.bookTopic = BookConstantType.SCIENCE;
                 break;
             case 2:
-                this.bookTopic = "literature and art";
+                this.bookTopic = BookConstantType.LITER_ART;
                 break;
             case 3:
-                this.bookTopic = "electronics and telecommunication";
+                this.bookTopic = BookConstantType.ELEC_TEL;
                 break;
             case 4:
-                this.bookTopic = "IT";
+                this.bookTopic = BookConstantType.IT;
                 break;
         }
     }
