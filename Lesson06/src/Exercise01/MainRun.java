@@ -1,5 +1,7 @@
 package Exercise01;
 
+import Exercise02.Subject;
+
 import java.util.Scanner;
 
 public class MainRun {
@@ -71,7 +73,7 @@ public class MainRun {
             saveBook(book);
         }
     }
-    private static void saveBook(Book book) {
+    private static void saveBook(Book book){
         for (int i = 0; i < books.length; i++) {
             if(books[i]==null) {
                 books[i] = book;
@@ -79,10 +81,9 @@ public class MainRun {
             }
         }
     }
-
     private static void showAllBook() {
         for (int i = 0; i < books.length; i++) {
-            if(books[i]!= null) {
+            if (books[i]!=null) {
                 System.out.println(books[i]);
             }
         }

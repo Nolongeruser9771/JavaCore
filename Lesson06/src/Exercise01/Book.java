@@ -19,6 +19,54 @@ public class Book {
         this.bookID = AUTO_BOOKID;
     }
 
+    public int getBookID() {
+        return bookID;
+    }
+
+    public void setBookID(int bookID) {
+        this.bookID = bookID;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getBookTopic() {
+        return bookTopic;
+    }
+
+    public void setBookTopic(String bookTopic) {
+        this.bookTopic = bookTopic;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public static int getAutoBookid() {
+        return AUTO_BOOKID;
+    }
+
+    public static void setAutoBookid(int autoBookid) {
+        AUTO_BOOKID = autoBookid;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -40,12 +88,12 @@ public class Book {
         System.out.println("2. literature and art");
         System.out.println("3. electronics and telecommunication");
         System.out.println("4. IT");
-            getBookTopic();
+            selectedBookTopic();
         System.out.println("Input book released year: ");
         this.releaseYear = new Scanner(System.in).nextInt();
     }
 
-    private void getBookTopic() {
+    private void selectedBookTopic() {
         int bookTopic;
         do {
             bookTopic = new Scanner(System.in).nextInt();
