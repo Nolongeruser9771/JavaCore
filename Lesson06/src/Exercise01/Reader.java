@@ -35,8 +35,7 @@ public class Reader extends Person {
     @Override
     public String toString() {
         return  super.toString() +
-                "Reader{" +
-                "id=" + id +
+                ", id=" + id +
                 ", type='" + type + '\'' +
                 '}';
     }

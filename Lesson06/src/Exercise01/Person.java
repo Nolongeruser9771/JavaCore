@@ -39,8 +39,7 @@ public class Person {
         return "Person{" +
                 "name='" + name + '\'' +
                 ", adress='" + adress + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+                ", phoneNumber='" + phoneNumber + '\'';
     }
 
     public void InputInfo() {
