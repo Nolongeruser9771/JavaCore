@@ -45,7 +45,7 @@ public class Book {
         this.releaseYear = new Scanner(System.in).nextInt();
     }
 
-    public void getBookTopic() {
+    private void getBookTopic() {
         int bookTopic;
         do {
             bookTopic = new Scanner(System.in).nextInt();
