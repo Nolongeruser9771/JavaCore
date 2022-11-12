@@ -4,8 +4,23 @@ import java.util.Arrays;
 
 public class ArticleManagement {
 
+    private static int totalPost;
+
+    public static int getTotalPost() {
+        return totalPost;
+    }
+
+    public static void setTotalPost(int totalPost) {
+        ArticleManagement.totalPost = totalPost;
+    }
+
     Jounalist jounalist;
     PostDetail[] postDetails;
+
+    public ArticleManagement(Jounalist jounalist, PostDetail[] postDetails) {
+        this.jounalist = jounalist;
+        this.postDetails = postDetails;
+    }
 
     public Jounalist getJounalist() {
         return jounalist;

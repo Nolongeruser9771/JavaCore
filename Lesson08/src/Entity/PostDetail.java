@@ -4,6 +4,11 @@ public class PostDetail {
     ArticleType articleType;
     int quantity;
 
+    public PostDetail(ArticleType articleType, int quantity) {
+        this.articleType = articleType;
+        this.quantity = quantity;
+    }
+
     public ArticleType getArticleType() {
         return articleType;
     }

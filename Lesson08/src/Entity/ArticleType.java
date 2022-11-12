@@ -9,11 +9,11 @@ public class ArticleType implements Inputable{
     private String articleName;
     private double price;
 
-    public int getArticleType() {
+    public int getArticleID() {
         return articleID;
     }
 
-    public void setArticleType(int articleType) {
+    public void setArticleID(int articleType) {
         this.articleID = articleType;
     }
 
