@@ -1,9 +1,13 @@
 package Logic_Handle;
 
 import Constant.JounalistType;
+import Entity.ArticleManagement;
 import Entity.Jounalist;
+import Entity.PostDetail;
 import MainRun.Main;
+import javafx.geometry.Pos;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static MainRun.Main.*;
@@ -33,7 +37,16 @@ public class sortMenuLogic {
     }
 
     public static void articleQuantitySort() {
-
+        for (int i = 0; i < articleManagements.length - 1; i++) {
+            for (int j = i + 1; j < articleManagements.length; j++) {
+                if (articleManagements[i].getTotalPost() > articleManagements[j].getTotalPost()) {
+                    ArticleManagement value = articleManagements[i];
+                    articleManagements[i] = articleManagements[j];
+                    articleManagements[j]=value;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(articleManagements));
     }
 
     public static void nameSort() {
@@ -46,5 +59,6 @@ public class sortMenuLogic {
                 }
             }
         }
+        System.out.println(Arrays.toString(jounalists));
     }
 }

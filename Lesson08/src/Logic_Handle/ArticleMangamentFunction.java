@@ -12,7 +12,6 @@ import static MainRun.Main.*;
 
 public class ArticleMangamentFunction {
 
-
     public static void addNewArticleManagementInfo() {
         if (!isOfNull()){
             System.out.println("Bạn cần có dữ liệu để phân công");
@@ -37,7 +36,7 @@ public class ArticleMangamentFunction {
             int postNum =new Scanner(System.in).nextInt();
             PostDetail[] postDetails = new PostDetail[postNum];
             int count = 0;
-            int totalPost = 0;
+            int total = 0;
             for (int j = 0; j < postNum; j++) {
                 System.out.println("Nhập id loại bài viết thứ " + (j+1));
                 int articleID;
@@ -53,12 +52,12 @@ public class ArticleMangamentFunction {
                 System.out.println("Nhập số lượng bài viết thể loại này");
                 int articleQuantity = new Scanner(System.in).nextInt();
                 postDetails[count] = new PostDetail(articleType,articleQuantity);
-                totalPost+= articleQuantity;
+                total+= articleQuantity;
                 count++;
             }
             ArticleManagement articleManagement = new ArticleManagement(jounalist,postDetails);
+            articleManagement.setTotalPost(total);
             saveArticleManagementInfo(articleManagement);
-            articleManagement.
         }
         showArticleManagementInfo();
         }

@@ -3,19 +3,17 @@ package Entity;
 import java.util.Arrays;
 
 public class ArticleManagement {
+    private int totalPost;
+    Jounalist jounalist;
+    PostDetail[] postDetails;
 
-    private static int totalPost;
-
-    public static int getTotalPost() {
+    public int getTotalPost() {
         return totalPost;
     }
 
-    public static void setTotalPost(int totalPost) {
-        ArticleManagement.totalPost = totalPost;
+    public void setTotalPost(int totalPost) {
+        this.totalPost = totalPost;
     }
-
-    Jounalist jounalist;
-    PostDetail[] postDetails;
 
     public ArticleManagement(Jounalist jounalist, PostDetail[] postDetails) {
         this.jounalist = jounalist;
