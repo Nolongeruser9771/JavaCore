@@ -6,12 +6,15 @@ import Entity.SalesManagement;
 
 import java.util.Scanner;
 
-import static MainRun.MainRun.products;
-import static MainRun.MainRun.salesManagements;
+import static MainRun.MainRun.*;
 
 public class SalesManagementLogic {
 
     public static void addNewSalesManagement() {
+        if(!isOfNull()) {
+            System.out.println("Bạn cần dữ liệu để tính");
+            return;
+        }
         System.out.println("Nhập số lượng nhân viên muốn in DS:");
         int salesNum = new Scanner(System.in).nextInt();
         for (int i = 0; i < salesNum; i++) {
@@ -60,6 +63,22 @@ public class SalesManagementLogic {
             SalesManagement salesManagement = new SalesManagement(sale, products);
             saveSalesManagementInfo(salesManagement);
         }
+    }
+
+    private static boolean isOfNull(){
+        boolean salesValid = false;
+        boolean productsValid = false;
+        for (int i = 0; i < sales.length; i++) {
+            if(sales[i]!=null){
+                salesValid = true;
+            }
+        }
+        for (int i = 0; i < products.length; i++) {
+            if (products[i]!=null) {
+                productsValid = true;
+            }
+        }
+        return salesValid && productsValid;
     }
     private static boolean isOfIdAvailable(Product[] products, int productID) {
         boolean checkIdAvailable = false;
