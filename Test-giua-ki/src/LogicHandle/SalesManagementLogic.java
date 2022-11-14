@@ -138,8 +138,14 @@ public class SalesManagementLogic {
                 }
                 Product[] products = salesManagements[i].getProduct();
                 for (int k = 0; k < products.length-1; k++) {
+                    if(products[k]==null) {
+                        continue;
+                    }
                     for (int l = k; l < products.length - 1; l++) {
-                        if (products[i].getProductGroup().compareTo(products[k].getProductGroup()) > 0) {
+                        if(products[l]==null) {
+                            continue;
+                        }
+                        if (products[k].getProductGroup().compareTo(products[l].getProductGroup()) > 0) {
                             Product temptProduct = products[k];
                             products[k] = products[l];
                             products[k] = temptProduct;
@@ -181,6 +187,9 @@ public class SalesManagementLogic {
             for (int j = 0; j < salesManagements.length; j++) {
                 Product[] products = salesManagements[i].getProduct();
                 for (int k = 0; k < products.length-1; k++) {
+                    if(products[k]==null) {
+                        continue;
+                    }
                         earning += products[k].getPrice() * products[k].getQuanTiTy();
                     }
             }
