@@ -184,7 +184,6 @@ public class SalesManagementLogic {
                 continue;
             }
             String saleName = sale1.getSale().getName();
-            for (int j = 0; j < salesManagements.length; j++) {
                 Product[] products = salesManagements[i].getProduct();
                 for (int k = 0; k < products.length-1; k++) {
                     if(products[k]==null) {
@@ -192,7 +191,6 @@ public class SalesManagementLogic {
                     }
                         earning += products[k].getPrice() * products[k].getQuanTiTy();
                     }
-            }
             System.out.println("Doanh thu của hân viên tên "+ saleName + "là: "+ earning);
         }
     }
