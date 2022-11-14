@@ -12,7 +12,7 @@ import static MainRun.Main.*;
 public class RouteManagementLogic {
     public static void addNewRouteManagement() {
             if(!isOfNull()) {
-                System.out.println("Bn cần có dữ liệu để phân công");
+                System.out.println("Bạn cần có dữ liệu để phân công");
                 return;
             }
             System.out.println("Muốn phân công cho bao nhiêu tài xế:");
