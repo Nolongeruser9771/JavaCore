@@ -24,7 +24,7 @@ public class ProductLogic {
             product.inputInfo();
             Main.products.add(product);
         }
-    };
+    }
 
     public static void showProductInfo() {
         for (Product product: Main.products) {
