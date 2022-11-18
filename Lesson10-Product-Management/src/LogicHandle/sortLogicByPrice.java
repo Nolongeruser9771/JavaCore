@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import static LogicHandle.ProductLogic.*;
 
-public class sortLogic {
+public class sortLogicByPrice {
     public static void sortByPriceMenu() {
         System.out.println("Bạn muốn tìm các sản phẩm theo mức giá nào?");
         System.out.println("Chọn 1 trong các lựa chọn sau:");

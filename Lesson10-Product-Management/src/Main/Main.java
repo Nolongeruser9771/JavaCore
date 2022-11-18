@@ -1,13 +1,12 @@
 package Main;
 
 import Entity.Product;
-import LogicHandle.ProductLogic;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import static LogicHandle.ProductLogic.*;
-import static LogicHandle.sortLogic.sortByPriceMenu;
+import static LogicHandle.sortLogicByPrice.sortByPriceMenu;
 
 public class Main {
 

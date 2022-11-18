@@ -5,6 +5,8 @@ import Main.Main;
 
 import java.util.Scanner;
 
+import static LogicHandle.sortLogicById.sortByIdMenu;
+
 public class ProductLogic {
     public static void addProduct() {
         System.out.println("Thêm bao nhiêu sản phẩm");
@@ -54,6 +56,7 @@ public class ProductLogic {
             if (Main.products.get(i).getId() == productId) {
                 prod = Main.products.get(i);
                 System.out.println(prod);
+                sortByIdMenu(i);
                 break;
             }
         }
@@ -99,6 +102,7 @@ public class ProductLogic {
         if(prod==null) {
             System.out.println("Không có sản phẩm có giá từ 50.000VNĐ đến dưới 100.000VND");
         }
+
     }
 
     public static void findOver100() {
