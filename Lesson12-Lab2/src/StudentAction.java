@@ -19,7 +19,7 @@ public class StudentAction {
                 scoreChemistry = Float.parseFloat(scanner.nextLine());
 
                 if (isValidScore(scoreMath, scorePhysic, scoreChemistry)) {
-                    double scoreAverage = (scoreMath + scorePhysic + scoreChemistry) / 3;
+                    float scoreAverage = (scoreMath + scorePhysic + scoreChemistry) / 3;
                     String rank = rank(scoreAverage);
                     return new Student(AUTO_ID, name, scoreMath, scorePhysic, scoreChemistry, scoreAverage, rank);
                 }
@@ -37,7 +37,7 @@ public class StudentAction {
         }
         return true;
     }
-    public String rank(double scoreAverage) {
+    public String rank(float scoreAverage) {
         String rank;
         if (scoreAverage >=8) {
             rank ="A";

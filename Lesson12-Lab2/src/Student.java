@@ -5,10 +5,10 @@ public class Student {
     private float scorePhysic;
     private float scoreChemistry;
 
-    private double scoreAverage;
+    private float scoreAverage;
     private String rank;
 
-    public Student(int id, String name, float scoreMath, float scorePhysic, float scoreChemistry, double scoreAverage, String rank) {
+    public Student(int id, String name, float scoreMath, float scorePhysic, float scoreChemistry, float scoreAverage, String rank) {
         this.id = id;
         this.name = name;
         this.scoreMath = scoreMath;
@@ -58,11 +58,11 @@ public class Student {
         this.scoreChemistry = scoreChemistry;
     }
 
-    public double getScoreAverage() {
+    public float getScoreAverage() {
         return scoreAverage;
     }
 
-    public void setScoreAverage(double scoreAverage) {
+    public void setScoreAverage(float scoreAverage) {
         this.scoreAverage = scoreAverage;
     }
 
