@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class PetAction {
-    private int AUTO_ID = 20;
 
     public Pet inputInfo(Scanner scanner) {
         System.out.println("Mời nhập tên pet của bạn");
@@ -49,8 +48,7 @@ public class PetAction {
         System.out.println("Mời bạn nhập tên ảnh");
         String images = scanner.nextLine();
 
-        AUTO_ID++;
-        Pet pet = new Pet(AUTO_ID,name,species,age,sex,description,type,images);
+        Pet pet = new Pet(name,species,age,sex,description,type,images);
         System.out.println("Thành công nhập thông tin pet");
         System.out.println(pet);
         return pet;

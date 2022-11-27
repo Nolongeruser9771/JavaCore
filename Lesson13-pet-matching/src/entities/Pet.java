@@ -2,7 +2,7 @@ package entities;
 
 public class Pet {
 
-    private int AUTO_ID;
+    private static int AUTO_ID;
     private int id;
     private String name;
     private String species;
@@ -12,8 +12,8 @@ public class Pet {
     private String TYPE;
     private String images;
 
-    public Pet(int id, String name, String species, int age, String sex, String description, String TYPE, String images) {
-        this.id = id;
+    public Pet(String name, String species, int age, String sex, String description, String TYPE, String images) {
+        this.id = ++AUTO_ID;
         this.name = name;
         this.species = species;
         this.age = age;
