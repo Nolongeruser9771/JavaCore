@@ -1,44 +1,49 @@
 package logichandle;
 
 import constant.EmailAndPasswordConstant;
-import entities.Member;
-import entities.Order;
-import entities.Product;
+import entities.*;
+import view.AdminMainHomeView;
 import view.LoginHomeView;
-import view.MainHomeView;
+import view.UserMainHomeView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class LoginLogic {
-    public Member logIn(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, ArrayList<Order> orders) {
+    public User logIn(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         System.out.println("Nhập thông tin đăng nhập");
         System.out.println("Mời nhập username:");
         String username = scanner.nextLine();
         System.out.println("Mời nhập password:");
         String password = scanner.nextLine();
-        System.out.println(members);
 
-        Member checkedMember = null;
-        for (Member mem:members) {
-            if (mem.getUsername().equals(username) && mem.getPassword().equals(password)) {
+        User checkedUser = null;
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 System.out.println("Đăng nhâp thành công!");
-                checkedMember = mem;
-                MainHomeView mainHomeView = new MainHomeView();
-                mainHomeView.displayHomeMenu(scanner,products,members,checkedMember, orders);
-                return checkedMember;
+                checkedUser = user;
+                if (user.getRole().equals("ADMIN")) {
+                    AdminMainHomeView adminMainHomeView = new AdminMainHomeView();
+                    adminMainHomeView.displayAdminHomeView(scanner, products, users,user, orders, preOrders);
+                    return checkedUser;
+                } else {
+                    UserMainHomeView mainHomeView = new UserMainHomeView();
+                    mainHomeView.displayHomeMenu(scanner, products, users, checkedUser, orders, preOrders);
+                    return checkedUser;
+                }
             }
         }
         System.out.println("Đăng nhập thất bại!");
-        return checkedMember;
+        return checkedUser;
+
     }
+    //Check lại
 
-    public void SignUp(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, ArrayList<Order> orders) {
+    public User SignUp(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         String name, phone, address, username = null, password = null, email = null;
-        boolean flag = true;
-
-        while (flag) {
+        User thisUser = null;
+        do {
             System.out.println("Mời nhập thông tin cá nhân:\n" +
                     "Mời nhập họ và tên: ");
             name = scanner.nextLine();
@@ -53,35 +58,33 @@ public class LoginLogic {
             password = scanner.nextLine();
             System.out.println("Mời nhập email:");
             email = scanner.nextLine();
-            Member thisMember;
             if (checkValidPassword(password) && checkValidEmail(email)) {
-                if (!checkExistedUsername(username,members) && !checkExistedEmail(email, members)) {
+                if (!checkExistedUsername(username,users) && !checkExistedEmail(email, users)) {
                     System.out.println("Bạn đã đăng kí thành công");
-                    thisMember = new Member(name,phone,address,email,username,password);
-                    members.add(thisMember);
-
-                    System.out.println(members);
-                    logIn(scanner,products,members,orders);
-                    flag = false;
+                    thisUser = new User(name,phone,address,email,username,password,"MEMBER");
+                    users.add(thisUser);
+                    return thisUser;
                 }
             }
-        }
+        } while (thisUser==null);
+
+        return thisUser;
     }
 
-    public void forgetPassword(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, ArrayList<Order> orders) {
-        Member thisMember = null;
+    public void forgetPassword(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
+        User thisUser = null;
         System.out.println("Nhập email của bạn: ");
         String email = scanner.nextLine();
-        for (Member Member : members) {
-            if (Member.getEmail().equals(email)) {
-                thisMember = Member;
+        for (User User : users) {
+            if (User.getEmail().equals(email)) {
+                thisUser = User;
                 break;
             }
         }
-        if (thisMember==null) {
+        if (thisUser==null) {
             System.out.println("Không tồn tại tài khoản này");
             LoginHomeView loginHomeView = new LoginHomeView();
-            loginHomeView.displayLoginHomeView(scanner,products, members, orders);
+            loginHomeView.displayLoginHomeView(scanner,products, users, orders,preOrders);
             return;
         }
         String newPass;
@@ -89,12 +92,12 @@ public class LoginLogic {
             System.out.println("Nhập password mới: ");
             newPass = scanner.nextLine();
         } while (!checkValidPassword(newPass));
-        thisMember.setPassword(newPass);
+        thisUser.setPassword(newPass);
         System.out.println("Thay đổi password thành công");
     }
-    public boolean checkExistedUsername(String username, ArrayList<Member> members){
-        for (Member Member:members){
-            if(Member.getUsername().equals(username)){
+    public boolean checkExistedUsername(String username, ArrayList<User> users){
+        for (User User:users){
+            if(User.getUsername().equals(username)){
                 System.out.println("Username này đã tồn tại vui lòng nhập lại");
                 return true;
             }
@@ -102,9 +105,9 @@ public class LoginLogic {
         return false;
     }
 
-    public boolean checkExistedEmail(String email, ArrayList<Member> members){
-        for (Member Member:members){
-            if(Member.getEmail().equals(email)){
+    public boolean checkExistedEmail(String email, ArrayList<User> users){
+        for (User User:users){
+            if(User.getEmail().equals(email)){
                 System.out.println("Email này đã tồn tại vui lòng nhập lại");
                 return true;
             }

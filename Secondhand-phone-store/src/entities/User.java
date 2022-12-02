@@ -1,6 +1,6 @@
 package entities;
 
-public class Person {
+public class User {
 
     private static int AUTO_ID;
     protected int id;
@@ -8,14 +8,20 @@ public class Person {
     protected String phone;
     protected String address;
     protected String email;
+    protected String username;
+    protected String password;
+    protected long rewardPoint;
     protected String role;
 
-    public Person(String name, String phone, String address, String email, String role) {
+    public User(String name, String phone, String address, String email, String username, String password,String role) {
         this.id = ++AUTO_ID;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.email = email;
+        this.username = username;
+        this.password = password;
+        this.rewardPoint = 0;
         this.role = role;
     }
 
@@ -59,6 +65,34 @@ public class Person {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRewardPoint(long rewardPoint) {
+        this.rewardPoint = rewardPoint;
+    }
+
+    public long getRewardPoint() {
+        return rewardPoint;
+    }
+
+    public void setRewardPoint(int rewardPoint) {
+        this.rewardPoint = rewardPoint;
+    }
+
     public String getRole() {
         return role;
     }
@@ -69,12 +103,15 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", rewardPoint=" + rewardPoint +
                 ", role='" + role + '\'' +
                 '}';
     }

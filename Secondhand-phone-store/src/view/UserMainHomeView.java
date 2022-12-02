@@ -1,58 +1,56 @@
 package view;
 
-import data.ProductData;
-import constant.PhoneStatusConstant;
 import constant.PhoneTypeConstant;
-import entities.Member;
-import entities.Order;
-import entities.Product;
-import entities.idFindable;
+import entities.*;
 import logichandle.BuyLogic;
 
-import javax.swing.text.TabSet;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class MainHomeView implements idFindable {
-    private ArrayList<Product> products;
+public class UserMainHomeView implements idFindable, choiceCheckable {
 
-    public void displayHomeMenu(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, Member thisMember, ArrayList<Order> orders) {
+    public void displayHomeMenu(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         String choiceInput;
         do {
-            System.out.println("Chào mừng bạn đến cửa hàng NGUYÊN SECOND-SMART\n" +
+            System.out.println("===== WELCOME TO NGUYÊN SECOND-SMART =====\n" +
                 "Bạn muốn làm gì?\n" +
-                "1. Mua điện thoại      2. Bán điện thoại       3. Đổi cũ lấy mới\n" +
+                "1. Mua điện thoại      2. Bán điện thoại       3. Đổi cũ lấy mới      4.Thay đổi thông tin cá nhân    0. Thoát\n" +
                 "Mời bạn chọn");
             choiceInput = scanner.nextLine();
-        } while (!isChoiceOfFunctionValid(choiceInput));
+        } while (!isChoiceOfFiveFunctionValid(choiceInput));
+        //Id sản phẩm
         switch (Integer.parseInt(choiceInput)) {
             case 1:
-                ProductData productData = new ProductData();
-                ArrayList<Product> prods = productData.productData(products);
-                displayBuyMenu(scanner,prods,members,orders,thisMember);
+                displayBuyMenu(scanner,prods,users,orders,thisUser);
                 break;
             case 2:
-                displaySaleMenu(scanner,products);
+                displaySaleMenu(scanner,prods);
                 break;
             case 3:
-                displayExhangeMenu(scanner,products);
+                displayExhangeMenu(scanner,prods,thisUser,preOrders);
                 break;
+            case 4:
+                LoginHomeView loginHomeView = new LoginHomeView();
+                loginHomeView.loginActionView(scanner, users, prods, orders, thisUser,preOrders);
+            case 5:
+                System.exit(0);
         }
+        displayHomeMenu(scanner, prods, users,thisUser, orders, preOrders);
     }
 
-    public void displayBuyMenu(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, ArrayList<Order> orders, Member thisMember) {
+    public void displayBuyMenu(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, User thisUser) {
         String choiceInput;
         do {
             System.out.println("Bạn muốn hiển thị sản phẩm theo:\n" +
                     "1. Theo giá        2. Theo loại");
             choiceInput = scanner.nextLine();
-        } while (!isChoiceOfPhoneSaleValid(choiceInput));
+        } while (!isChoiceOfTwoFunctionValid(choiceInput));
         BuyLogic buyLogic = new BuyLogic();
         switch (Integer.parseInt(choiceInput)) {
             case 1:
                 displayPriceMenu(scanner,products);
-                buyLogic.BuyInfo(scanner,products,members,orders,thisMember);
+                buyLogic.BuyInfo(scanner,products,users,orders,thisUser);
                 break;
             case 2:
                 String type = phoneTypeChoose(scanner);
@@ -61,7 +59,7 @@ public class MainHomeView implements idFindable {
                         System.out.println(prod);
                     }
                 });
-                buyLogic.BuyInfo(scanner,products,members,orders,thisMember);
+                buyLogic.BuyInfo(scanner,products,users,orders,thisUser);
                 break;
         }
     }
@@ -72,7 +70,7 @@ public class MainHomeView implements idFindable {
             System.out.println("Bạn muốn sắp xếp sản phẩm theo thứ tự:\n" +
                     "1. Từ thấp tới cao     2. Từ cao tới thấp");
             choiceInput = scanner.nextLine();
-        } while (!isChoiceOfPhoneSaleValid(choiceInput));
+        } while (!isChoiceOfTwoFunctionValid(choiceInput));
         switch (Integer.parseInt(choiceInput)) {
             case 1:
                 products.sort(new Comparator<Product>() {
@@ -96,47 +94,59 @@ public class MainHomeView implements idFindable {
     }
     private void displaySaleMenu(Scanner scanner,ArrayList<Product> products) {
         System.out.println("Bạn muốn bán điện thoại?");
-        phoneInfoInput(scanner,products);
+        Product choosedProduct = choosePhone(scanner, products);
+        double rate =phoneStatusChoose(scanner);
+
+        System.out.println("Giá thu mua của chúng tôi cho sản phẩm này là: " + choosedProduct.getPrice()*rate);
         System.out.println("Hiện tại, chúng tôi không hỗ trợ thu mua online.\n" +
                 "Nếu bạn đồng ý với gía thu mua trên, xin vui lòng mang điện thoại đến cửa hàng của chúng tôi");
     }
-    public void displayExhangeMenu(Scanner scanner,ArrayList<Product> products) {
+    private void displayExhangeMenu(Scanner scanner,ArrayList<Product> products, User thisUser, ArrayList<PreOrder> exchangePreOrders) {
         System.out.println("Bạn muốn đổi điện thoại?");
-        double refPrice = phoneInfoInput(scanner,products);
-        System.out.println("Mời chọn hiệu điện thoại muốn đổi");
-        String newType = phoneTypeChoose(scanner);
-        products.forEach(product -> {if (product.getProductType().equals(newType)) {
-            System.out.println(product.getId() + "\t\t\t" + product.getProductName());
-        }});
-        String idInput;
-        do {
-            System.out.println("Mời nhập id để chọn dòng điện thoại muốn đổi:");
-            idInput = scanner.nextLine();
-        }while (findById(idInput,products)==null);
-        Product choosedProd = findById(idInput,products);
-        double payment = choosedProd.getPrice() - refPrice;
+        Product oldPro = choosePhone(scanner, products);
+        double purchasePrice = oldPro.getPrice() * phoneStatusChoose(scanner);
+        System.out.println("Chọn hiệu điện thoại bạn muốn đổi");
+        Product newPro = choosePhone(scanner,products);
+        double payment = newPro.getPrice() - purchasePrice;
+        long rewardPoint = (long) Math.abs(payment);
         if (payment>=0) {
-            System.out.println("Số tiền bạn cần phải bù thêm là: " + payment);
+            System.out.println("Bạn có thể đổi điện thoại "+ newPro.getProductName() + ", số tiền cần bù vào là:" + payment + "VNĐ");
         } else {
-            System.out.println("Bạn được đổi sản phẩm với trị giá 0đ và "+ Math.abs(payment) + " điểm, có thể quy đổi thành tiền cho đơn hàng tới");
+
+            System.out.println("Bạn có thể đổi miễn phí điện thoại " + newPro.getProductName()+", và được tặng thêm "+ rewardPoint +
+                    " điểm trong tài khoản, có thể sử dụng cho các đơn hàng tiếp theo");
+        }
+        String choiceInput;
+        do {
+            System.out.println("Bạn có muốn pre-order để chúng tôi giữ sản phẩm lại cho bạn không?\n" +
+                    "1. Có. Tôi muốn            2. Không. Tôi cần xem xét lại");
+            choiceInput = scanner.nextLine();
+        } while (!isChoiceOfTwoFunctionValid(choiceInput));
+        switch (Integer.parseInt(choiceInput)) {
+            case 1:
+                PreOrder exchangePreOrder = new PreOrder(thisUser,oldPro,newPro,1);
+                exchangePreOrders.add(exchangePreOrder);
+                newPro.setStock(newPro.getStock()-1);
+                thisUser.setRewardPoint(thisUser.getRewardPoint()+rewardPoint);
+                System.out.println("Bạn đã pre-order để thu cũ đổi mới thành công");
+                break;
+            case 2:
+                break;
         }
     }
-    public double phoneInfoInput(Scanner scanner, ArrayList<Product> products) {
+    private Product choosePhone(Scanner scanner, ArrayList<Product> products) {
         System.out.println("Bạn cần chọn loại và tình trạng điện thoại để biêt giá thu mua hiện tại của chúng tôi");
         String type = phoneTypeChoose(scanner);
         products.forEach(prod -> {
             if (prod.getProductType().equals(type)) {
-                System.out.println(prod.getId() + "\t\t\t" + prod.getProductName());
+                System.out.println(prod.getId() + "\t\t" + prod.getProductName());
             }});
         String idInput;
         do {
             System.out.println("Nhập loại điện thoại bạn muốn bán bằng cách nhập id tương ứng");
             idInput = scanner.nextLine();
         } while (findById(idInput, products) == null);
-        Product product = findById(idInput, products);
-        double rate = phoneStatusChoose(scanner);
-        System.out.println("Gía chúng tôi thu mua đối với điện thoại này là: " + product.getPrice() * rate);
-        return product.getPrice() * rate;
+        return findById(idInput, products);
     }
     public String phoneTypeChoose(Scanner scanner) {
         String type = null;
@@ -146,7 +156,7 @@ public class MainHomeView implements idFindable {
                     "1. Apple   2. SamSung  3.Oppo\n" +
                     "Mời bạn chọn");
             typeChoiceInput = scanner.nextLine();
-        } while (!isChoiceOfFunctionValid(typeChoiceInput));
+        } while (!isChoiceOfThreeFunctionValid(typeChoiceInput));
         switch (Integer.parseInt(typeChoiceInput)) {
             case 1:
                 type = PhoneTypeConstant.A.value;
@@ -161,9 +171,7 @@ public class MainHomeView implements idFindable {
         return type;
     }
 
-
     public double phoneStatusChoose(Scanner scanner) {
-        String status = null;
         double rate = 0;
         String statusChoiceInput;
         do {
@@ -175,33 +183,29 @@ public class MainHomeView implements idFindable {
                     "5. Màn hình âm ảnh nặng, máy dính iCloud, KNOX\n" +
                     "Mời bạn chọn");
             statusChoiceInput = scanner.nextLine();
-        } while (!isChoiceOfPhoneTypeAndStatusValid(statusChoiceInput));
+        } while (!isChoiceOfFiveFunctionValid(statusChoiceInput));
         switch (Integer.parseInt(statusChoiceInput)) {
             case 1:
-                status = PhoneStatusConstant.TYPE1.value;
                 rate = 0.85;
                 break;
             case 2:
-                status = PhoneStatusConstant.TYPE2.value;
                 rate = 0.75;
                 break;
             case 3:
-                status = PhoneStatusConstant.TYPE3.value;
                 rate = 0.65;
                 break;
             case 4:
-                status = PhoneStatusConstant.TYPE4.value;
                 rate = 0.45;
                 break;
             case 5:
-                status = PhoneStatusConstant.TYPE5.value;
                 rate = 0.35;
                 break;
         }
         return rate;
     }
 
-    private boolean isChoiceOfFunctionValid(String choiceInput) {
+    @Override
+    public boolean isChoiceOfThreeFunctionValid(String choiceInput) {
         try {
             int choice = Integer.parseInt(choiceInput);
             if (choice>=1 && choice <=3) {
@@ -215,7 +219,8 @@ public class MainHomeView implements idFindable {
         }
     }
 
-    private boolean isChoiceOfPhoneTypeAndStatusValid(String choiceInput) {
+    @Override
+    public boolean isChoiceOfFiveFunctionValid(String choiceInput) {
         try {
             int choice = Integer.parseInt(choiceInput);
             if (choice>=1 && choice <=5) {
@@ -229,7 +234,8 @@ public class MainHomeView implements idFindable {
         }
     }
 
-    private boolean isChoiceOfPhoneSaleValid(String choiceInput) {
+    @Override
+    public boolean isChoiceOfTwoFunctionValid(String choiceInput) {
         try {
             int choice = Integer.parseInt(choiceInput);
             if (choice==1 || choice == 2) {

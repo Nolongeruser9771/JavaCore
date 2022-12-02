@@ -4,22 +4,21 @@ import java.time.LocalDate;
 
 public class Order {
     private static int AUTO_ID;
-    private static int reward;
     private int id;
     private LocalDate orderDate;
-    private Member member;
+    private User user;
     private Product product;
     private int quantity;
     private int rewardPoint;
     private double total;
 
-    public Order(LocalDate orderDate, Member member,Product product, int quantity) {
+    public Order(User user,Product product, int quantity) {
         this.id = ++AUTO_ID;
-        this.orderDate = orderDate;
-        this.member = member;
+        this.orderDate = LocalDate.now();
+        this.user = user;
         this.product = product;
         this.quantity = quantity;
-        this.rewardPoint = reward;
+        this.rewardPoint = 0;
         this.total = quantity* product.getPrice() - rewardPoint;
     }
 
@@ -39,12 +38,12 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Member getMember() {
-        return member;
+    public User getUser() {
+        return user;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Product getProduct() {
@@ -84,7 +83,7 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", orderDate=" + orderDate +
-                ", member=" + member +
+                ", user=" + user +
                 ", product=" + product +
                 ", quantity=" + quantity +
                 ", rewardPoint=" + rewardPoint +

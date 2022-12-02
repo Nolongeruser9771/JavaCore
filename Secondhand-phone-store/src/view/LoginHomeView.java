@@ -1,38 +1,35 @@
 package view;
 
-import entities.Member;
-import entities.Order;
-import entities.Product;
+import entities.*;
 import logichandle.LoginLogic;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class LoginHomeView {
-    public void displayLoginHomeView(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, ArrayList<Order> orders) {
-        System.out.println("WELCOME TO NGUYÊN SECOND-SMART");
+public class LoginHomeView implements choiceCheckable {
+    LoginLogic loginLogic = new LoginLogic();
+    public void displayLoginHomeView(Scanner scanner, ArrayList<Product> products, ArrayList<User> user, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
+        System.out.println("===== WELCOME TO NGUYÊN SECOND-SMART =====");
         String choiceInput;
         do {
             System.out.println("Bạn đã có tài khoản chưa?\n" +
                     "1. Tôi đã có\n" +
                     "2. Tôi chưa có");
             choiceInput = scanner.nextLine();
-        } while (!isChoiceOfloginValid(choiceInput));
-        LoginLogic loginLogic = new LoginLogic();
+        } while (!isChoiceOfTwoFunctionValid(choiceInput));
         switch (Integer.parseInt(choiceInput)) {
             case 1:
-                Member checkLogIn = loginLogic.logIn(scanner,products,members,orders);
-                System.out.println(checkLogIn);
+                User checkLogIn = loginLogic.logIn(scanner,products,user,orders, preOrders);
                 while (checkLogIn==null) {
-                    loginWrongView(scanner,products,members,orders);
+                    loginWrongView(scanner,products,user,orders,preOrders);
                 }
                 break;
             case 2:
-                loginLogic.SignUp(scanner,products,members,orders);
+                loginLogic.SignUp(scanner,products,user,orders, preOrders);
                 break;
         }
     }
-    private void loginWrongView(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, ArrayList<Order> orders) {
+    private void loginWrongView(Scanner scanner, ArrayList<Product> products, ArrayList<User> user, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         System.out.println("Username hoặc password đang sai!");
         String choiceInput;
         do {
@@ -40,23 +37,92 @@ public class LoginHomeView {
             System.out.println("1. Đăng nhập lại");
             System.out.println("2. Quên password");
             choiceInput = scanner.nextLine();
-        } while (!isChoiceOfloginValid(choiceInput));
-        LoginLogic loginLogic = new LoginLogic();
+        } while (!isChoiceOfTwoFunctionValid(choiceInput));
         switch (Integer.parseInt(choiceInput)){
             case 1:
-                loginLogic.logIn(scanner,products,members,orders);
+                loginLogic.logIn(scanner,products,user,orders,preOrders);
                 break;
             case 2:
-                loginLogic.forgetPassword(scanner,products,members,orders);
+                loginLogic.forgetPassword(scanner,products,user,orders,preOrders);
                 break;
         }
     }
 
-    private void loginActionView() {
-
+    public void loginActionView(Scanner scanner, ArrayList<User> users,ArrayList<Product> products,ArrayList<Order> orders,User thisUser,ArrayList<PreOrder> preOrders) {
+        String choiceInput;
+        do {
+            System.out.println("WELCOME "+ thisUser.getUsername().toUpperCase()+ ", bạn muốn thay đổi thông tin gì?\n" +
+                    "1 - Thay đổi username\n" +
+                    "2 - Thay đổi email\n" +
+                    "3 - Thay đổi mật khẩu\n" +
+                    "4 - Đăng xuất\n" +
+                    "0 - Thoát chương trình");
+            System.out.println("Mời bạn chọn: ");
+            choiceInput = scanner.nextLine();
+        } while (!isChoiceOfFiveFunctionValid(choiceInput));
+        switch (Integer.parseInt(choiceInput)){
+            case 1:
+                boolean flag = true;
+                while (flag){
+                    System.out.println("Mời nhập username mới: ");
+                    String username = scanner.nextLine();
+                    if(!loginLogic.checkExistedUsername(username, users)){
+                        flag=false;
+                        thisUser.setUsername(username);
+                        System.out.println("Đổi username thành công!");
+                    }
+                }
+                break;
+            case 2:
+                boolean flag2 = true;
+                while (flag2){
+                    System.out.println("Mời nhập email mới: ");
+                    String email = scanner.nextLine();
+                    if(!loginLogic.checkExistedEmail(email, users)){
+                        flag2=false;
+                        thisUser.setEmail(email);
+                        System.out.println("Đổi email thành công!");
+                    }
+                }
+                break;
+            case 3:
+                System.out.println("Mời nhập password mới: ");
+                String password = scanner.nextLine();
+                thisUser.setPassword(password);
+                System.out.println("Đổi password thành công");
+                break;
+            case 4:
+                displayLoginHomeView(scanner,products,users,orders,preOrders);
+                break;
+            case 0:
+                System.exit(0);
+                break;
+        }
+        loginActionView(scanner, users, products, orders, thisUser,preOrders);
     }
 
-    private boolean isChoiceOfloginValid(String choiceInput) {
+    @Override
+    public boolean isChoiceOfFiveFunctionValid(String choiceInput) {
+        try {
+            int choice = Integer.parseInt(choiceInput);
+            if (choice>=0 && choice <=4) {
+                return true;
+            }
+            System.out.println("Lựa chọn không hợp lệ!");
+            return false;
+        } catch (Exception e) {
+            System.out.println("Lựa chọn không hợp lệ!");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isChoiceOfThreeFunctionValid(String choiceInput) {
+        return false;
+    }
+
+    @Override
+    public boolean isChoiceOfTwoFunctionValid(String choiceInput) {
         try {
             int choice = Integer.parseInt(choiceInput);
             if (choice==1 || choice == 2) {

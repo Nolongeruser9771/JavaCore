@@ -1,18 +1,15 @@
 package logichandle;
 
-import entities.Member;
-import entities.Order;
-import entities.Product;
+import entities.*;
 
-import entities.idFindable;
-import view.MainHomeView;
+import view.UserMainHomeView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BuyLogic implements idFindable {
-    public void BuyInfo(Scanner scanner, ArrayList<Product> products, ArrayList<Member> members, ArrayList<Order> orders, Member thisMember) {
+
+    public void BuyInfo(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, ArrayList<Order> orders, User thisUser) {
         System.out.println("Bạn muốn mua sản phẩm nào?");
         String idInput, prodNumInput;
         do {
@@ -20,8 +17,8 @@ public class BuyLogic implements idFindable {
             idInput = scanner.nextLine();
             System.out.println("Mời chọn số lượng muốn mua:");
             prodNumInput = scanner.nextLine();
-        } while (!isValidNumber(idInput) && !isValidNumber(prodNumInput) && findById(idInput,products)==null);
-        Product choosedProd = findById(idInput,products);
+        } while (!isValidNumber(idInput) && !isValidNumber(prodNumInput) && findById(idInput,prods)==null);
+        Product choosedProd = findById(idInput,prods);
         int quantity = Integer.parseInt(prodNumInput);
         System.out.println("Bạn xác nhận muốn mua sản phẩm này?" + "\n" + choosedProd.getProductName() + "\nSố lượng: " + quantity);
         System.out.println("1. Có. Tôi muốn mua         2. Không, tôi muốn chọn lại sản phẩm");
@@ -29,13 +26,13 @@ public class BuyLogic implements idFindable {
         switch (Integer.parseInt(scanner.nextLine())) {
             case 1:
                 System.out.println("Thông tin đơn hàng:");
-                Order order = new Order(LocalDate.now(),thisMember,choosedProd,quantity);
+                Order order = new Order(thisUser,choosedProd,quantity);
                 orders.add(order);
-                System.out.println(order + "\nĐặt hàng thành công");
+                System.out.println(order + "\nĐặt hàng thành công!");
                 break;
             case 2:
-                MainHomeView mainHomeView = new MainHomeView();
-                mainHomeView.displayBuyMenu(scanner,products,members,orders, thisMember);
+                UserMainHomeView mainHomeView = new UserMainHomeView();
+                mainHomeView.displayBuyMenu(scanner,prods,users,orders, thisUser);
                 break;
         }
     }
