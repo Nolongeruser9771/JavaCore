@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class UserMainHomeView implements idFindable, choiceCheckable {
+public class UserMainHomeView implements ProductService, MenuService {
 
     public void displayHomeMenu(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         String choiceInput;
@@ -105,10 +105,19 @@ public class UserMainHomeView implements idFindable, choiceCheckable {
         System.out.println("Bạn muốn đổi điện thoại?");
         Product oldPro = choosePhone(scanner, products);
         double purchasePrice = oldPro.getPrice() * phoneStatusChoose(scanner);
-        System.out.println("Chọn hiệu điện thoại bạn muốn đổi");
-        Product newPro = choosePhone(scanner,products);
+        Product newPro;
+        boolean flag = true;
+        do {
+            System.out.println("Chọn hiệu điện thoại bạn muốn đổi");
+            newPro = choosePhone(scanner, products);
+            if (newPro.getStock()==0) {
+                System.out.println("Sản phẩm này đã hết hàng! Vui lòng chọn loại điện thoaij khác");
+                flag = false;
+            }
+        } while (!flag);
+        //Check xem stock còn không
         double payment = newPro.getPrice() - purchasePrice;
-        long rewardPoint = (long) Math.abs(payment);
+        int rewardPoint = (int) Math.abs(payment);
         if (payment>=0) {
             System.out.println("Bạn có thể đổi điện thoại "+ newPro.getProductName() + ", số tiền cần bù vào là:" + payment + "VNĐ");
         } else {

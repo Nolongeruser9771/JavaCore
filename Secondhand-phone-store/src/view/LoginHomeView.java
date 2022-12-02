@@ -6,7 +6,7 @@ import logichandle.LoginLogic;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class LoginHomeView implements choiceCheckable {
+public class LoginHomeView implements MenuService {
     LoginLogic loginLogic = new LoginLogic();
     public void displayLoginHomeView(Scanner scanner, ArrayList<Product> products, ArrayList<User> user, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         System.out.println("===== WELCOME TO NGUYÊN SECOND-SMART =====");

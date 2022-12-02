@@ -1,13 +1,12 @@
 package view;
 
-import data.ProductData;
 import entities.*;
 import logichandle.ProductLogic;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AdminMainHomeView implements choiceCheckable, idFindable {
+public class AdminMainHomeView implements MenuService, ProductService {
     LoginHomeView loginHomeView = new LoginHomeView();
     public void displayAdminHomeView(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         String choiceInput;

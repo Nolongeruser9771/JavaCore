@@ -15,8 +15,9 @@ public class Product {
         this.productType = productType;
         this.description = description;
         this.price = price;
+
         this.stock = stock;
-        this.stockStatus = "Còn hàng";
+        this.stockStatus = setStockStatus(stock);
     }
 
     public String getProductType() {
@@ -71,8 +72,10 @@ public class Product {
         return stockStatus;
     }
 
-    public void setStockStatus(String stockStatus) {
-        this.stockStatus = stockStatus;
+    public String setStockStatus(int stock) {
+        if (stock!=0) {
+            return "Còn hàng";
+        } else return "Hết hàng";
     }
 
     @Override

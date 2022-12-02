@@ -10,7 +10,7 @@ public class User {
     protected String email;
     protected String username;
     protected String password;
-    protected long rewardPoint;
+    protected int rewardPoint;
     protected String role;
 
     public User(String name, String phone, String address, String email, String username, String password,String role) {
@@ -81,16 +81,12 @@ public class User {
         this.password = password;
     }
 
-    public void setRewardPoint(long rewardPoint) {
-        this.rewardPoint = rewardPoint;
-    }
-
-    public long getRewardPoint() {
-        return rewardPoint;
-    }
-
     public void setRewardPoint(int rewardPoint) {
         this.rewardPoint = rewardPoint;
+    }
+
+    public int getRewardPoint() {
+        return rewardPoint;
     }
 
     public String getRole() {

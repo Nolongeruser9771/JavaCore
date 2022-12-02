@@ -10,7 +10,7 @@ public class Order {
     private Product product;
     private int quantity;
     private int rewardPoint;
-    private double total;
+    private int total;
 
     public Order(User user,Product product, int quantity) {
         this.id = ++AUTO_ID;
@@ -18,7 +18,6 @@ public class Order {
         this.user = user;
         this.product = product;
         this.quantity = quantity;
-        this.rewardPoint = 0;
         this.total = quantity* product.getPrice() - rewardPoint;
     }
 
@@ -70,11 +69,11 @@ public class Order {
         this.rewardPoint = rewardPoint;
     }
 
-    public double getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
