@@ -1,4 +1,4 @@
-package Data;
+package data;
 
 import constant.PhoneTypeConstant;
 import entities.Product;

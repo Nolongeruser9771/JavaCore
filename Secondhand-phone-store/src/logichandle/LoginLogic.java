@@ -21,10 +21,10 @@ public class LoginLogic {
         System.out.println(members);
 
         Member checkedMember = null;
-        for (Member Member:members) {
-            if (Member.getUsername().equals(username) && Member.getPassword().equals(password)) {
+        for (Member mem:members) {
+            if (mem.getUsername().equals(username) && mem.getPassword().equals(password)) {
                 System.out.println("Đăng nhâp thành công!");
-                checkedMember = Member;
+                checkedMember = mem;
                 MainHomeView mainHomeView = new MainHomeView();
                 mainHomeView.displayHomeMenu(scanner,products,members,checkedMember, orders);
                 return checkedMember;

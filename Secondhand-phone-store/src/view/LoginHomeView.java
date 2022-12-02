@@ -22,6 +22,7 @@ public class LoginHomeView {
         switch (Integer.parseInt(choiceInput)) {
             case 1:
                 Member checkLogIn = loginLogic.logIn(scanner,products,members,orders);
+                System.out.println(checkLogIn);
                 while (checkLogIn==null) {
                     loginWrongView(scanner,products,members,orders);
                 }

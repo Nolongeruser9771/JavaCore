@@ -3,19 +3,24 @@ package entities;
 import java.time.LocalDate;
 
 public class Order {
-    protected static int AUTO_ID;
-    protected int id;
-    protected LocalDate orderDate;
-    protected Product product;
-    protected int quantity;
-    protected double total;
+    private static int AUTO_ID;
+    private static int reward;
+    private int id;
+    private LocalDate orderDate;
+    private Member member;
+    private Product product;
+    private int quantity;
+    private int rewardPoint;
+    private double total;
 
-    public Order(LocalDate orderDate, Product product, int quantity) {
+    public Order(LocalDate orderDate, Member member,Product product, int quantity) {
         this.id = ++AUTO_ID;
         this.orderDate = orderDate;
+        this.member = member;
         this.product = product;
         this.quantity = quantity;
-        this.total = quantity* product.getPrice();
+        this.rewardPoint = reward;
+        this.total = quantity* product.getPrice() - rewardPoint;
     }
 
     public int getId() {
@@ -34,6 +39,14 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -50,6 +63,14 @@ public class Order {
         this.quantity = quantity;
     }
 
+    public int getRewardPoint() {
+        return rewardPoint;
+    }
+
+    public void setRewardPoint(int rewardPoint) {
+        this.rewardPoint = rewardPoint;
+    }
+
     public double getTotal() {
         return total;
     }
@@ -63,8 +84,10 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", orderDate=" + orderDate +
+                ", member=" + member +
                 ", product=" + product +
                 ", quantity=" + quantity +
+                ", rewardPoint=" + rewardPoint +
                 ", total=" + total +
                 '}';
     }
