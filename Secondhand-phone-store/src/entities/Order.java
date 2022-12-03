@@ -4,13 +4,13 @@ import java.time.LocalDate;
 
 public class Order {
     private static int AUTO_ID;
-    private int id;
-    private LocalDate orderDate;
-    private User user;
-    private Product product;
-    private int quantity;
-    private int rewardPoint;
-    private int total;
+    protected int id;
+    protected LocalDate orderDate;
+    protected User user;
+    protected Product product;
+    protected int quantity;
+    protected int rewardPoint;
+    protected int total;
 
     public Order(User user,Product product, int quantity) {
         this.id = ++AUTO_ID;
@@ -18,7 +18,8 @@ public class Order {
         this.user = user;
         this.product = product;
         this.quantity = quantity;
-        this.total = quantity* product.getPrice() - rewardPoint;
+        this.rewardPoint = 0;
+        this.total = quantity* product.getPrice();
     }
 
     public int getId() {
@@ -79,14 +80,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", orderDate=" + orderDate +
-                ", user=" + user +
-                ", product=" + product +
-                ", quantity=" + quantity +
-                ", rewardPoint=" + rewardPoint +
-                ", total=" + total +
-                '}';
+        return  id +"\t\t\t"+ orderDate +"\t\t\t"+ user.name +"\t\t\t"+ product.getProductName() +"\t\t\t"+ quantity +"\t\t\t\t"+ product.getPrice() +"\t\t\t\t" + rewardPoint +"\t\t\t"+total+"\n";
     }
 }
