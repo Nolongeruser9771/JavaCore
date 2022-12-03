@@ -1,4 +1,4 @@
-package entities;
+package iService;
 
 public interface MenuService {
     boolean isChoiceOfFiveFunctionValid(String choiceInput);

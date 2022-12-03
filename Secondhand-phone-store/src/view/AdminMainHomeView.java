@@ -1,6 +1,8 @@
 package view;
 
 import entities.*;
+import iService.MenuService;
+import iService.ProductService;
 import logichandle.ProductLogic;
 
 import java.util.ArrayList;

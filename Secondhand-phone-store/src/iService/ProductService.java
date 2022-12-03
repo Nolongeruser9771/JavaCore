@@ -1,4 +1,6 @@
-package entities;
+package iService;
+
+import entities.Product;
 
 import java.util.ArrayList;
 
