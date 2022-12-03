@@ -4,20 +4,21 @@ import constant.PhoneTypeConstant;
 import entities.*;
 import logichandle.BuyLogic;
 import logichandle.ExchangeAndSaleLogic;
+import logichandle.UserLogic;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
 public class UserMainHomeView implements MenuService {
-
+    UserLogic userLogic = new UserLogic();
+    LoginHomeView loginHomeView = new LoginHomeView();
     public void displayHomeMenu(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
-
         String choiceInput;
         do {
             System.out.println("===== WELCOME TO NGUYÊN SECOND-SMART =====\n" +
                 "Bạn muốn làm gì?\n" +
-                "1. Mua điện thoại      2. Bán điện thoại       3. Đổi cũ lấy mới      4.Thay đổi thông tin cá nhân    0. Thoát\n" +
+                "1. Mua điện thoại      2. Bán điện thoại       3. Đổi cũ lấy mới      4.Truy cập thông tin cá nhân    0. Thoát\n" +
                 "Mời bạn chọn");
             choiceInput = scanner.nextLine();
         } while (!isChoiceOfFiveFunctionValid(choiceInput));
@@ -34,12 +35,45 @@ public class UserMainHomeView implements MenuService {
                 exchangeAndSaleLogic.exchangeInfoInput(scanner,prods,thisUser,preOrders);
                 break;
             case 4:
-                LoginHomeView loginHomeView = new LoginHomeView();
-                loginHomeView.loginActionView(scanner, users, prods, orders, thisUser,preOrders);
-            case 5:
+                userInfoAccessMenu(scanner,prods,users,thisUser,orders,preOrders);
+                break;
+                //Thêm quyền xem order
+
+            case 0:
                 System.exit(0);
         }
         displayHomeMenu(scanner, prods, users,thisUser, orders, preOrders);
+    }
+
+    public void userInfoAccessMenu(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
+        String choiceInput;
+        while (true) {
+            do {
+                System.out.println("Bạn có thể:\n" +
+                        "1. Thay đổi thông tin đăng nhập    2. Thay đổi thông tin cá nhân   3. Xem đơn hàng     4. Xem điểm thưởng    0. Trở lại Main Menu");
+                choiceInput = scanner.nextLine();
+            } while (!isChoiceOfFiveFunctionValid(choiceInput));
+            switch (Integer.parseInt(choiceInput)) {
+                case 1:
+                    loginHomeView.loginActionView(scanner, users, prods, orders, thisUser, preOrders);
+                    break;
+                case 2:
+                    userLogic.userInfoChange(scanner,prods,users,thisUser,orders,preOrders);
+                    break;
+                case 3:
+                    userLogic.showOrderInfo(thisUser);
+                    break;
+                case 4:
+                    System.out.println("==========================");
+                    System.out.println("ĐIỂM THƯỞNG CỦA BẠN LÀ");
+                    System.out.println("==========================");
+                    System.out.println(thisUser.getRewardPoint());
+                    break;
+                case 0:
+                    displayHomeMenu(scanner, prods, users, thisUser, orders, preOrders);
+                    break;
+            }
+        }
     }
 
     public void displayBuyMenu(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, User thisUser) {
@@ -50,26 +84,28 @@ public class UserMainHomeView implements MenuService {
             choiceInput = scanner.nextLine();
         } while (!isChoiceOfTwoFunctionValid(choiceInput));
         BuyLogic buyLogic = new BuyLogic();
+        ArrayList<Product> sortLists;
         switch (Integer.parseInt(choiceInput)) {
             case 1:
-                displayPriceMenu(scanner,products);
-                buyLogic.BuyInfo(scanner,products,users,orders,thisUser);
+                sortLists = displayPriceMenu(scanner,products);
+                buyLogic.BuyInfoInput(scanner,products,users,orders,thisUser,sortLists);
                 break;
             case 2:
                 String type = phoneTypeChoose(scanner);
-                productShowByType(products,type);
-                buyLogic.BuyInfo(scanner,products,users,orders,thisUser);
+                sortLists = productShowByType(products,type);
+                buyLogic.BuyInfoInput(scanner,products,users,orders,thisUser,sortLists);
                 break;
         }
     }
 
-    private void displayPriceMenu(Scanner scanner, ArrayList<Product> products) {
+    private ArrayList<Product> displayPriceMenu(Scanner scanner, ArrayList<Product> products) {
         String choiceInput;
         do {
             System.out.println("Bạn muốn sắp xếp sản phẩm theo thứ tự:\n" +
-                    "1. Từ thấp tới cao     2. Từ cao tới thấp");
+                    "1. Từ thấp tới cao     2. Từ cao tới thấp       3. Theo khoảng giá");
             choiceInput = scanner.nextLine();
-        } while (!isChoiceOfTwoFunctionValid(choiceInput));
+        } while (!isChoiceOfThreeFunctionValid(choiceInput));
+        ArrayList<Product> sortLists = new ArrayList<>();
         switch (Integer.parseInt(choiceInput)) {
             case 1:
                 products.sort(new Comparator<Product>() {
@@ -79,6 +115,7 @@ public class UserMainHomeView implements MenuService {
                     }
                 });
                 productShow(products);
+                sortLists = products;
                 break;
             case 2:
                 products.sort(new Comparator<Product>() {
@@ -88,18 +125,49 @@ public class UserMainHomeView implements MenuService {
                     }
                 });
                 productShow(products);
+                sortLists = products;
+                break;
+            case 3:
+                //hiển thị theo khoảng giá
+                do {
+                    sortLists = productShowByPrice(scanner,products);
+                } while (sortLists.size()==0);
+                //Không lặp mà hỏi người ta có muốn tìm lại không
                 break;
         }
+        return sortLists;
     }
-    private void productShowByType(ArrayList<Product> products, String type) {
+    private ArrayList<Product> productShowByPrice(Scanner scanner, ArrayList<Product> products) {
+        ArrayList<Product> sortLists = new ArrayList<>();
+        try {
+            System.out.println("Mời bạn nhập khoảng giá muốn tìm\n" + "" +
+                    "Từ: ");
+            int fromPrice = Integer.parseInt(scanner.nextLine());
+            System.out.println("Đến: ");
+            int toPrice = Integer.parseInt(scanner.nextLine());
+            for (Product prod : products) {
+                if (prod.getPrice() < toPrice && prod.getPrice() > fromPrice) {
+                    sortLists.add(prod);
+                }
+            }
+            productShow(sortLists);
+        } catch (Exception e) {
+            System.out.println("Dữ liệu không hợp lệ");
+        }
+        return sortLists;
+    }
+    private ArrayList<Product> productShowByType(ArrayList<Product> products, String type) {
+        ArrayList <Product> sortLists = new ArrayList<>();
         System.out.println("================================================================");
         System.out.println("ID\t\t\tPRODUCT-NAME\t\tDESCRIPTION\t\tPRICE\t\tSTATUS");
         System.out.println("================================================================");
         products.forEach(prod -> {
             if (prod.getProductType().equals(type)) {
                 System.out.println(prod.getId()+"\t\t\t"+prod.getProductName()+"\t\t\t"+prod.getDescription()+"\t\t\t"+prod.getPrice()+"\t\t\t"+prod.getStockStatus());
+                sortLists.add(prod);
             }
         });
+        return sortLists;
     }
 
     private void productShow(ArrayList<Product> products) {

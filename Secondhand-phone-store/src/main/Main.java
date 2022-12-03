@@ -1,6 +1,7 @@
 package main;
 
 import data.ProductData;
+import data.UserData;
 import entities.*;
 import view.LoginHomeView;
 
@@ -13,14 +14,15 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Order> orders = new ArrayList<>();
         ArrayList<PreOrder> preOrders = new ArrayList<>();
-        User user1 = new User("Nguyên", "0704690014", "BD","nt@gmail.com","Nguyen","Nguyen@97","MEMBER");
-        User user2 = new User("Nguyên", "0704690014", "BD","ntt@gmail.com","NguyenNguyen","Nguyen@97","ADMIN");
-        ArrayList<User> users = new ArrayList<>(Arrays.asList(user1,user2));
 
-        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<User> users = new ArrayList<>();
+        UserData userData = new UserData();
+        users = userData.userData(users);
+
         Scanner scanner = new Scanner(System.in);
 
         ProductData productData = new ProductData();
+        ArrayList<Product> products = new ArrayList<>();
         ArrayList<Product> prods = productData.productData(products);
 
 

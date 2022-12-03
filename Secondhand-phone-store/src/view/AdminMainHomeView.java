@@ -15,8 +15,8 @@ public class AdminMainHomeView implements MenuService, ProductService {
                     "1 - Thay đổi thông tin cá nhân\n" +
                     "2 - Xem và chỉnh sửa sản phẩm\n" +
                     "3 - Xem và duyệt đơn hàng\n" +
-                    "4 - Thêm đơn hàng\n" +
-                    "5 - Thoát chương trình\n");
+                    "4 - Đăng xuất\n" +
+                    "5 - Thoát chương trình");
             System.out.println("Mời bạn chọn: ");
             choiceInput = scanner.nextLine();
         } while (!isChoiceOfFiveFunctionValid(choiceInput));
@@ -35,7 +35,7 @@ public class AdminMainHomeView implements MenuService, ProductService {
                 orderUpdateMenu(scanner, orders,preOrders);
                 break;
             case 4:
-                //Thêm đơn hàng
+                loginHomeView.displayLoginHomeView(scanner,prods,users,orders,preOrders);
                 break;
             case 0:
                 System.exit(0);
@@ -54,7 +54,7 @@ public class AdminMainHomeView implements MenuService, ProductService {
         switch (Integer.parseInt(choiceInput)) {
             case 1:
                 System.out.println("======================================================================================================================");
-                System.out.println("ORDER-ID\tORDER-DATE\t\tCUSTOMER-NAME\t\tPRODUCT-NAME\tQUANTITY\t\tPRICE\t\tREWARD-POINT\t\t\tTOTAL");
+                System.out.println("ORDER-ID\tORDER-DATE\t\tCUSTOMER-NAME\t\tPRODUCT-NAME\tQUANTITY\t\tPRICE\t\tREWARD-POINT\t\t\tTOTAL\t\t\tADDRESS");
                 System.out.println("======================================================================================================================");
                 System.out.println(orders);
 
@@ -64,10 +64,9 @@ public class AdminMainHomeView implements MenuService, ProductService {
                 System.out.println(preOrders);
                 break;
             case 2:
-                //trước khi duyệt cần hiển thị các preorder có status = 0
                 preorderConfirm(scanner,preOrders);
                 break;
-                //Có thể thêm chức năng thêm order
+                //Có thể thêm options thêm đơn hàng ở đây
         }
     }
     private void productUpdateMenu(Scanner scanner, ArrayList<Product> products) {
@@ -120,6 +119,7 @@ public class AdminMainHomeView implements MenuService, ProductService {
                         preOrder.setTotal(total);
                         preOrder.setNote(note);
                         preOrder.getUser().setRewardPoint((int)(total*0.01));
+                        break;
                     } catch (Exception e) {
                         System.out.println("Nhập liệu không hợp lệ");
                     }
@@ -127,7 +127,6 @@ public class AdminMainHomeView implements MenuService, ProductService {
             case 2:
                 break;
         }
-
     }
 
     private void preorderConfirm(Scanner scanner,ArrayList<PreOrder> preOrders) {

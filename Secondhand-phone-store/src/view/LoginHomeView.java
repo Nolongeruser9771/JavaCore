@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class LoginHomeView implements MenuService {
     LoginLogic loginLogic = new LoginLogic();
-    public void displayLoginHomeView(Scanner scanner, ArrayList<Product> products, ArrayList<User> user, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
+    public void displayLoginHomeView(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         System.out.println("===== WELCOME TO NGUYÊN SECOND-SMART =====");
         String choiceInput;
         do {
@@ -19,13 +19,13 @@ public class LoginHomeView implements MenuService {
         } while (!isChoiceOfTwoFunctionValid(choiceInput));
         switch (Integer.parseInt(choiceInput)) {
             case 1:
-                User checkLogIn = loginLogic.logIn(scanner,products,user,orders, preOrders);
+                User checkLogIn = loginLogic.logIn(scanner,products,users,orders, preOrders);
                 while (checkLogIn==null) {
-                    loginWrongView(scanner,products,user,orders,preOrders);
+                    loginWrongView(scanner,products,users,orders,preOrders);
                 }
                 break;
             case 2:
-                loginLogic.SignUp(scanner,products,user,orders, preOrders);
+                loginLogic.SignUp(scanner,products,users,orders, preOrders);
                 break;
         }
     }

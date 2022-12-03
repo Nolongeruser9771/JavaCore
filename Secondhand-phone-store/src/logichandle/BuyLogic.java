@@ -6,31 +6,39 @@ import view.UserMainHomeView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.WeakHashMap;
 
 public class BuyLogic implements ProductService, MenuService {
 
-    public void BuyInfo(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, ArrayList<Order> orders, User thisUser) {
+    public void BuyInfoInput(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, ArrayList<Order> orders, User thisUser,ArrayList<Product> sortLists) {
         String idInput, prodNumInput;
         Product choosedProd = null;
         int quantity = 0;
-        boolean flag = true;
+        boolean flag1, flag2;
+        //Tìm và check id
         do {
             System.out.println("Bạn muốn mua sản phẩm nào?");
             System.out.println("Mời nhập id sản phẩm");
             idInput = scanner.nextLine();
-            System.out.println("Mời chọn số lượng muốn mua:");
-            prodNumInput = scanner.nextLine();
-            if (isValidNumber(idInput) && isValidNumber(prodNumInput) && findById(idInput, prods) != null) {
-                choosedProd = findById(idInput, prods);
-                quantity = Integer.parseInt(prodNumInput);
+            if (isValidNumber(idInput) && findById(idInput, sortLists) != null) {
+                choosedProd = findById(idInput, sortLists);
+                productShow(choosedProd);
+                flag1 = true;
             } else {
                 System.out.println("Dữ liệu không hợp lệ! Mời nhập lại.");
-                flag = false;
+                flag1 = false;
             }
-        } while (!stockCheck(choosedProd,quantity) && !flag);
-        //Tìm và Show sản phẩm (Check id, check numbervalid, check tồn kho)
-        productShow(choosedProd);
+        } while (!flag1);
+        //Check stock
+        do {
+            System.out.println("Mời chọn số lượng muốn mua:");
+            prodNumInput = scanner.nextLine();
+            if (isValidNumber(prodNumInput)) {
+                quantity = Integer.parseInt(prodNumInput);
+                flag2 = stockCheck(choosedProd,quantity);
+            } else {
+                flag2 = false;
+            }
+        }while (!flag2);
 
         String choiceInput;
         do {
@@ -55,9 +63,11 @@ public class BuyLogic implements ProductService, MenuService {
                     thisUser.setRewardPoint((int)(order.getTotal()*0.01));
                 }
                 orders.add(order);
+                thisUser.getOrders().add(order);
                 System.out.println("Đặt hàng thành công!");
                 break;
             case 2:
+                //Quay về HomeView
                 UserMainHomeView mainHomeView = new UserMainHomeView();
                 mainHomeView.displayBuyMenu(scanner,prods,users,orders, thisUser);
                 break;
@@ -89,14 +99,12 @@ public class BuyLogic implements ProductService, MenuService {
 
     private void orderShow(Order order) {
         System.out.println("======================================================================================================================");
-        System.out.println("ORDER-ID\tORDER-DATE\t\tCUSTOMER-NAME\t\tPRODUCT-NAME\tQUANTITY\t\tPRICE\t\tREWARD-POINT\t\t\tTOTAL");
+        System.out.println("ORDER-ID\tORDER-DATE\t\tCUSTOMER-NAME\t\tPRODUCT-NAME\tQUANTITY\t\tPRICE\t\tREWARD-POINT\t\t\tTOTAL\t\t\tADDRESS");
         System.out.println("======================================================================================================================");
         System.out.println(order);
     }
     private boolean stockCheck(Product choosedProd, int quantity) {
-        if (choosedProd==null) {
-            return false;
-        } else if (choosedProd.getStock()>quantity) {
+        if (choosedProd.getStock()>quantity) {
             return true;
         }
         System.out.println("Số lượng tồn kho không đủ! Xin xem lại số lượng hoặc chọn dòng điện thoại khác");
@@ -104,10 +112,7 @@ public class BuyLogic implements ProductService, MenuService {
     }
     private boolean isValidNumber(String numberInput) {
         try {
-            if (Integer.parseInt(numberInput)>=0) {
-                return true;
-            }
-            return false;
+            return Integer.parseInt(numberInput) > 0;
         } catch (Exception e) {
             return false;
         }

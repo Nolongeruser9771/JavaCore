@@ -80,6 +80,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return  id +"\t\t\t"+ orderDate +"\t\t\t"+ user.name +"\t\t\t"+ product.getProductName() +"\t\t\t"+ quantity +"\t\t\t\t"+ product.getPrice() +"\t\t\t\t" + rewardPoint +"\t\t\t"+total+"\n";
+        return  id +"\t\t\t"+ orderDate +"\t\t\t"+ user.name +"\t\t\t"+ product.getProductName() +"\t\t\t"+ quantity +"\t\t\t\t"+ product.getPrice() +"\t\t\t\t" + rewardPoint +"\t\t\t"+total+"\t\t"+ user.address;
     }
 }

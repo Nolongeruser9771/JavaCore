@@ -1,6 +1,5 @@
 package logichandle;
 
-import constant.PhoneTypeConstant;
 import entities.*;
 import view.UserMainHomeView;
 
@@ -61,6 +60,7 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
                 preOrderShow(preOrder);
 
                 exchangePreOrders.add(preOrder);
+                thisUser.getPreOrders().add(preOrder);
                 newPro.setStock(newPro.getStock()-1);
                 //chỉ đặt đơn hàng để giữ sp, stock tạm thời trừ đi 1, điểm reward chưa được cộng
                 System.out.println("Bạn đã pre-order để thu cũ đổi mới thành công!");
@@ -76,19 +76,31 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
         System.out.println("======================================================================================================================");
         System.out.println(preOrder);
     }
-    private Product choosePhone(Scanner scanner, ArrayList<Product> products) {
-        System.out.println("Bạn cần chọn loại và tình trạng điện thoại để biêt giá thu mua hiện tại của chúng tôi");
+
+    private ArrayList<Product> productShowByType(ArrayList<Product> products, Scanner scanner) {
+        System.out.println("Bạn cần chọn thông tin để biêt giá thu mua hiện tại của chúng tôi: ");
+        ArrayList <Product> sortLists = new ArrayList<>();
         String type = userMainHomeView.phoneTypeChoose(scanner);
+
+        System.out.println("==============================");
+        System.out.println("ID\t\t\tPRODUCT-NAME");
+        System.out.println("===============================");
         products.forEach(prod -> {
             if (prod.getProductType().equals(type)) {
                 System.out.println(prod.getId() + "\t\t" + prod.getProductName());
-            }});
+                sortLists.add(prod);
+            }
+        });
+        return sortLists;
+    }
+    private Product choosePhone(Scanner scanner, ArrayList<Product> products) {
+        ArrayList sortLists = productShowByType(products,scanner);
         String idInput;
         do {
             System.out.println("Nhập loại điện thoại bạn muốn bán bằng cách nhập id tương ứng");
             idInput = scanner.nextLine();
-        } while (findById(idInput, products) == null);
-        return findById(idInput, products);
+        } while (findById(idInput, sortLists) == null);
+        return findById(idInput, sortLists);
     }
 
     public double phoneStatusChoose(Scanner scanner) {
