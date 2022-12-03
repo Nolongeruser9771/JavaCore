@@ -15,9 +15,8 @@ public class AdminMainHomeView implements MenuService, ProductService {
                     "1 - Thay đổi thông tin cá nhân\n" +
                     "2 - Xem và chỉnh sửa sản phẩm\n" +
                     "3 - Xem và duyệt đơn hàng\n" +
-                    "4 - Thêm quyền admin\n" +
+                    "4 - Thêm đơn hàng\n" +
                     "5 - Thoát chương trình\n");
-            //Thêm options thêm đơn hàng
             System.out.println("Mời bạn chọn: ");
             choiceInput = scanner.nextLine();
         } while (!isChoiceOfFiveFunctionValid(choiceInput));
@@ -36,8 +35,7 @@ public class AdminMainHomeView implements MenuService, ProductService {
                 orderUpdateMenu(scanner, orders,preOrders);
                 break;
             case 4:
-                User admin = loginHomeView.loginLogic.SignUp(scanner,prods,users,orders,preOrders);
-                admin.setRole("ADMIN");
+                //Thêm đơn hàng
                 break;
             case 0:
                 System.exit(0);
