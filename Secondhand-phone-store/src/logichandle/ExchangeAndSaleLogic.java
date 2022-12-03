@@ -23,6 +23,8 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
         System.out.println("Bạn muốn đổi điện thoại?");
         Product oldPro = choosePhone(scanner, products);
         int purchasePrice = (int)(oldPro.getPrice() * phoneStatusChoose(scanner));
+        System.out.println("Giá thu mua tham khảo của sản phẩm này là:" + purchasePrice);
+        //Chọn điện thoại và tình trạng để biết giá thu mua
         Product newPro;
         boolean flag = true;
         do {
@@ -35,20 +37,18 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
         } while (!flag);
         //Check xem stock còn không
         int payment = newPro.getPrice() - purchasePrice;
-        int rewardPoint = Math.abs(payment);
-        int total;
         String note;
         System.out.println("Giá thu mua của sản phẩm là: "+ purchasePrice);
         if (payment>=0) {
             System.out.println("Bạn có thể đổi điện thoại "+ newPro.getProductName() + ", số tiền cần bù vào là:" + payment + "VNĐ");
-            total = payment;
             note = "--";
         } else {
-            System.out.println("Bạn có thể đổi miễn phí điện thoại " + newPro.getProductName()+", và được tặng thêm "+ rewardPoint +
+            int rewardPointPlus = Math.abs(payment);
+            System.out.println("Bạn có thể đổi miễn phí điện thoại " + newPro.getProductName()+", và được tặng thêm "+ rewardPointPlus +
                     " điểm trong tài khoản, có thể sử dụng cho các đơn hàng tiếp theo");
-            total=0;
-            note=String.valueOf(payment);
+            note= "+" + rewardPointPlus + " điểm";
         }
+        //Hiện thông báo về điểm và giá cả
         String choiceInput;
         do {
             System.out.println("Bạn có muốn pre-order để chúng tôi giữ sản phẩm lại cho bạn không?\n" +
@@ -57,13 +57,13 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
         } while (!isChoiceOfTwoFunctionValid(choiceInput));
         switch (Integer.parseInt(choiceInput)) {
             case 1:
-                PreOrder preOrder = new PreOrder(thisUser,oldPro,newPro,1,note);
-                preOrder.setTotal(total);
+                PreOrder preOrder = new PreOrder(thisUser,oldPro,purchasePrice,newPro,1,note);
                 preOrderShow(preOrder);
 
                 exchangePreOrders.add(preOrder);
                 thisUser.getPreOrders().add(preOrder);
                 newPro.setStock(newPro.getStock()-1);
+                //Thêm đơn preorder vào list preorder chung, và vào list preorder của cá nhân
                 //chỉ đặt đơn hàng để giữ sp, stock tạm thời trừ đi 1, điểm reward chưa được cộng
                 System.out.println("Bạn đã pre-order để thu cũ đổi mới thành công!");
                 System.out.println("Chúng tôi sẽ liên lạc lại qua điên thoại với bạn sau!");
@@ -96,7 +96,7 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
         return sortLists;
     }
     private Product choosePhone(Scanner scanner, ArrayList<Product> products) {
-        ArrayList sortLists = productShowByType(products,scanner);
+        ArrayList<Product> sortLists = productShowByType(products,scanner);
         String idInput;
         do {
             System.out.println("Nhập loại điện thoại bạn muốn bán bằng cách nhập id tương ứng");
@@ -176,11 +176,19 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
     @Override
     public Product findById(String id, ArrayList<Product> products) {
         Product choosedProd = null;
-        for (Product prod : products) {
-            if (prod.getId() == Integer.parseInt(id)) {
-                choosedProd = prod;
-                break;
+        try {
+            for (Product prod : products) {
+                if (prod.getId() == Integer.parseInt(id)) {
+                    choosedProd = prod;
+                    break;
+                }
             }
+            if (choosedProd==null){
+                System.out.println("Không tìm thấy id");
+            }
+            return choosedProd;
+        } catch (Exception e) {
+            System.out.println("Dữ liệu không hợp lệ!");
         }
         return choosedProd;
     }

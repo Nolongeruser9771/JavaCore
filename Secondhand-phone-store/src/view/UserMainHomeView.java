@@ -51,7 +51,7 @@ public class UserMainHomeView implements MenuService {
         while (true) {
             do {
                 System.out.println("Bạn có thể:\n" +
-                        "1. Thay đổi thông tin đăng nhập    2. Thay đổi thông tin cá nhân   3. Xem đơn hàng     4. Xem điểm thưởng    0. Trở lại Main Menu");
+                        "1. Thông tin đăng nhập    2. Thông tin cá nhân   3. Thông tin đơn hàng     4. Xem điểm thưởng    0. Trở lại Main Menu");
                 choiceInput = scanner.nextLine();
             } while (!isChoiceOfFiveFunctionValid(choiceInput));
             switch (Integer.parseInt(choiceInput)) {
