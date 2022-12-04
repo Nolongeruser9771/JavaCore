@@ -112,7 +112,7 @@ public class UserMainHomeView implements MenuService {
                 products.sort(new Comparator<Product>() {
                     @Override
                     public int compare(Product o1, Product o2) {
-                        return o1.getPrice()- o2.getPrice();
+                        return o1.getPrice() - o2.getPrice();
                     }
                 });
                 productShow(products);
@@ -122,7 +122,7 @@ public class UserMainHomeView implements MenuService {
                 products.sort(new Comparator<Product>() {
                     @Override
                     public int compare(Product o1, Product o2) {
-                        return o2.getPrice()- o1.getPrice();
+                        return o2.getPrice() - o1.getPrice();
                     }
                 });
                 productShow(products);
@@ -130,10 +130,13 @@ public class UserMainHomeView implements MenuService {
                 break;
             case 3:
                 //hiển thị theo khoảng giá
+                String choiceIn;
                 do {
                     sortLists = productShowByPrice(scanner,products);
-                } while (sortLists.size()==0);
-                //Không lặp mà hỏi người ta có muốn tìm lại không
+                    System.out.println("Bạn có muốn tìm tiếp không?\n" +
+                            "1. Có     2. Không");
+                    choiceIn = scanner.nextLine();
+                } while (!isChoiceOfTwoFunctionValid(choiceIn) || Integer.parseInt(choiceIn) == 1);
                 break;
         }
         return sortLists;
@@ -146,12 +149,24 @@ public class UserMainHomeView implements MenuService {
             int fromPrice = Integer.parseInt(scanner.nextLine());
             System.out.println("Đến: ");
             int toPrice = Integer.parseInt(scanner.nextLine());
-            for (Product prod : products) {
-                if (prod.getPrice() < toPrice && prod.getPrice() > fromPrice) {
-                    sortLists.add(prod);
+            //Kiểm tra khoảng giá có phù hợp không
+            if(toPrice>fromPrice) {
+                for (Product prod : products) {
+                    if (prod.getPrice() < toPrice && prod.getPrice() > fromPrice) {
+                        sortLists.add(prod);
+                    }
                 }
+            } else {
+                System.out.println("Khoảng giá không phù hợp!");
+                return sortLists;
             }
-            productShow(sortLists);
+
+            if (sortLists.size()==0) {
+                System.out.println("Không tìm được sản phẩm trong khoảng giá trên!");
+                return sortLists;
+            } else {
+                productShow(sortLists);
+            }
         } catch (Exception e) {
             System.out.println("Dữ liệu không hợp lệ");
         }

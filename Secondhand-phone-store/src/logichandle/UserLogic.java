@@ -37,14 +37,17 @@ public class UserLogic {
                 case 1:
                     System.out.println("Nhập Họ và Tên mới");
                     thisUser.setName(scanner.nextLine());
+                    System.out.println("Thay đổi Họ và tên thành công!");
                     break;
                 case 2:
                     System.out.println("Nhập số điện thoại mới");
                     thisUser.setPhone(scanner.nextLine());
+                    System.out.println("Thay đổi số điện thoại thành công!");
                     break;
                 case 3:
                     System.out.println("Nhập địa chỉ mới");
                     thisUser.setAddress(scanner.nextLine());
+                    System.out.println("Thay đổi địa chỉ thành công!");
                     break;
                 case 4:
                     UserMainHomeView userMainHomeView = new UserMainHomeView();

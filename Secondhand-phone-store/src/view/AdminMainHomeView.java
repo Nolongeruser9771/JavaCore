@@ -3,12 +3,13 @@ package view;
 import entities.*;
 import iService.MenuService;
 import iService.ProductService;
+import iService.Show;
 import logichandle.ProductLogic;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class AdminMainHomeView implements MenuService, ProductService {
+public class AdminMainHomeView extends Show implements MenuService, ProductService {
     LoginHomeView loginHomeView = new LoginHomeView();
     public void displayAdminHomeView(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         String choiceInput;
@@ -27,11 +28,6 @@ public class AdminMainHomeView implements MenuService, ProductService {
                 loginHomeView.loginActionView(scanner, users, prods, orders, thisUser, preOrders);
                 break;
             case 2:
-                System.out.println("=====================================================================================");
-                System.out.println(("ID\t\tPRODUCT-NAME\t\tPRODUCT-TYPE\t\tDESCRIPTION\t\tPRICE\t\tSTOCK\t\tSTATUS"));
-                System.out.println("=====================================================================================");
-                System.out.println(prods);
-                //show lại cho đẹp
                 productUpdateMenu(scanner,prods,users,thisUser,orders,preOrders);
                 break;
             case 3:
@@ -48,7 +44,6 @@ public class AdminMainHomeView implements MenuService, ProductService {
     }
     private void orderUpdateMenu(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
         String choiceInput;
-
         boolean flag;
         while (true) {
             do {
@@ -58,23 +53,25 @@ public class AdminMainHomeView implements MenuService, ProductService {
                         "2. Duyệt pre-order\n" +
                         "3. Trở lại Admin Menu");
                 choiceInput = scanner.nextLine();
-                if (!isChoiceOfThreeFunctionValid(choiceInput)||(isChoiceOfThreeFunctionValid(choiceInput)&&preOrders.size()==0 && Integer.parseInt(choiceInput)==2)){
-                    System.out.println("Lựa chọn không hợp lệ");
+                if (!isChoiceOfThreeFunctionValid(choiceInput)) {
+                    flag = false;
+                } else if (preOrders.size()==0 && Integer.parseInt(choiceInput)==2) {
+                    System.out.println("Hiện tại không có đơn hàng cần phải duyệt!");
                     flag = false;
                 }
             } while (!flag);
 
             switch (Integer.parseInt(choiceInput)) {
                 case 1:
-                    System.out.println("======================================================================================================================");
-                    System.out.println("ORDER-ID\tORDER-DATE\t\tCUSTOMER-NAME\t\tPRODUCT-NAME\tQUANTITY\t\tPRICE\t\tREWARD-POINT\t\t\tTOTAL\t\t\tADDRESS");
-                    System.out.println("======================================================================================================================");
-                    System.out.println(orders);
+                    System.out.println("===========================================================================================================");
+                    System.out.println("ORDER-ID\tORDER-DATE\tCUSTOMER-NAME\tPRODUCT-NAME\tQUANTITY\tPRICE\tREWARD-POINT\tTOTAL\tADDRESS");
+                    System.out.println("===========================================================================================================");
+                    listShow(orders);
 
-                    System.out.println("======================================================================================================================");
-                    System.out.println("PREORDER-ID\tPREORDER-DATE\tCUSTOMER-NAME\tOLD-PRODUCT\t\tNEW-PRODUCT\t\tQUANTITY\tPRICE\t\tTOTAL\t\tNOTE");
-                    System.out.println("======================================================================================================================");
-                    System.out.println(preOrders);
+                    System.out.println("=======================================================================================================================");
+                    System.out.println("PREORDER-ID\tPREORDER-DATE\tCUSTOMER-NAME\tOLD-PRODUCT\t\tNEW-PRODUCT\tQUANTITY\tPRICE\t\tTOTAL\t\tNOTE");
+                    System.out.println("=======================================================================================================================");
+                    listShow(preOrders);
                     break;
                 case 2:
                     preorderConfirm(scanner, prods, users, thisUser, orders, preOrders);
@@ -90,29 +87,47 @@ public class AdminMainHomeView implements MenuService, ProductService {
         while (true) {
             do {
                 System.out.println("Bạn muốn thực hiện:\n" +
-                        "1. Thêm sản phẩm\n" +
-                        "2. Xoá sản phẩm\n" +
-                        "3. Trở lại Admin Menu");
+                        "1. Xem sản phẩm\n" +
+                        "2. Thêm sản phẩm\n" +
+                        "3. Xoá sản phẩm\n" +
+                        "4. Trở lại Admin Menu");
                 choiceInput = scanner.nextLine();
-            } while (!isChoiceOfThreeFunctionValid(choiceInput));
+            } while (!isChoiceOfFourFunctionValid(choiceInput));
             ProductLogic productLogic = new ProductLogic();
             switch (Integer.parseInt(choiceInput)) {
                 case 1:
-                    Product newPro = productLogic.productInputInfo(scanner);
-                    products.add(newPro);
-                    System.out.println("Đã thêm sản phẩm thành công!");
+                    System.out.println("=====================================================================================");
+                    System.out.println("ID\tPRODUCT-NAME\tPRODUCT-TYPE\tDESCRIPTION\tPRICE\tSTOCK\tSTATUS");
+                    System.out.println("=====================================================================================");
+                    listShow(products);
                     break;
                 case 2:
+                    Product newPro = productLogic.productInputInfo(scanner);
+                    products.add(newPro);
+                    elementShow(newPro);
+                    System.out.println("Đã thêm sản phẩm thành công!");
+                    break;
+                case 3:
                     String idInput;
                     do {
                         System.out.println("Nhập id sản phẩm muốn xoá: ");
                         idInput = scanner.nextLine();
                     } while (findById(idInput, products) == null);
                     Product pro = findById(idInput, products);
-                    products.remove(pro);
-                    System.out.println("Đã xoá sản phẩm thành công!");
+                    elementShow(pro);
+
+                    String choiceIn;
+                    do {
+                        System.out.println("Bạn có chắc muốn xóa sản phẩm này?\n" +
+                                "1.  Có          2. Không");
+                        choiceIn = scanner.nextLine();
+                    } while (!isChoiceOfTwoFunctionValid(choiceIn));
+                    if (Integer.parseInt(choiceIn)==1) {
+                        products.remove(pro);
+                        System.out.println("Đã xoá sản phẩm thành công!");
+                    }
                     break;
-                case 3:
+                case 4:
                     displayAdminHomeView(scanner, products, users, thisUser, orders, preOrders);
                     break;
             }
@@ -121,50 +136,65 @@ public class AdminMainHomeView implements MenuService, ProductService {
 
     private void PreOrderUpdate(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders, PreOrder preOrder) {
         String choiceInput;
-        while (true) {
-            do {
-                System.out.println("Bạn có muốn chỉnh sửa giá và thêm ghi chú cho sản phẩm thu đổi không?\n" +
-                        "1. Có          2. Không");
-                choiceInput = scanner.nextLine();
-            } while (!isChoiceOfTwoFunctionValid(choiceInput));
-            int choice = Integer.parseInt(choiceInput);
-            switch (choice) {
-                case 1:
-                    int purchasePrice;
-                    String note;
-                    while (true) {
-                        try {
-                            System.out.println("Mời nhập giá thực tế thu mua: ");
-                            purchasePrice = Integer.parseInt(scanner.nextLine());
-                            System.out.println("Mời nhập ghi chú");
-                            note = scanner.nextLine();
+        do {
+            System.out.println("Bạn có muốn chỉnh sửa giá và thêm ghi chú cho sản phẩm thu đổi không?\n" +
+                    "1. Có          2. Không");
+            choiceInput = scanner.nextLine();
+        } while (!isChoiceOfTwoFunctionValid(choiceInput));
+        int choice = Integer.parseInt(choiceInput);
+        switch (choice) {
+        case 1:
+            int purchasePrice;
+            String note;
+            while (true) {
+                try {
+                    System.out.println("Mời nhập giá thực tế thu mua: ");
+                    purchasePrice = Integer.parseInt(scanner.nextLine());
+                    System.out.println("Mời nhập ghi chú");
+                    note = scanner.nextLine();
 
-                            preOrder.setPurchasePrice(purchasePrice);
-                            preOrder.setNote(note);
-                            preOrder.getUser().setRewardPoint((int) (preOrder.getUser().getRewardPoint() + preOrder.getTotal() * 0.01));
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Nhập liệu không hợp lệ");
-                        }
+                    //Thay đổi tình trạng preOrder/total/note
+                    preOrder.setStatus(1);
+                    preOrder.setTotal(purchasePrice, preOrder.getNewProduct());
+                    preOrder.setNote(note);
+
+                    //Set điểm reward
+                    int rewardPointPlus;
+                    if (purchasePrice > preOrder.getNewProduct().getPrice()) {
+                        rewardPointPlus = purchasePrice - preOrder.getNewProduct().getPrice() + (int) (preOrder.getTotal() * 0.01);
+                    } else {
+                        rewardPointPlus = (int) (preOrder.getTotal() * 0.01);
                     }
-                case 2:
-                    displayAdminHomeView(scanner, products, users, thisUser, orders, preOrders);
+                    preOrder.getUser().setRewardPoint(rewardPointPlus);
+
+                    System.out.println("Đã duyệt đơn thành công!");
+                    elementShow(preOrder);
                     break;
+                } catch (Exception e) {
+                    System.out.println("Nhập liệu không hợp lệ");
+                }
+            }
+                break;
+            case 2:
+                displayAdminHomeView(scanner, products, users, thisUser, orders, preOrders);
+                break;
             }
         }
-    }
 
     private void preorderConfirm(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, User thisUser, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
-        preOrders.forEach(p -> {
-            if (p.getStatus()==0) {System.out.println(p);}
-        });
-        String idInput;
         while (true) {
+            ArrayList<PreOrder> sortLists = new ArrayList<>();
+            preOrders.forEach(p -> {
+            if (p.getStatus()==0) {
+                System.out.println(p);
+                sortLists.add(p);}});
+
+            String idInput;
             do {
                 System.out.println("Mời nhập id của pre-order cần duyệt: ");
                 idInput = scanner.nextLine();
             } while (findPreorderById(idInput, preOrders) == null);
-            PreOrder choosedPreOrder = findPreorderById(idInput, preOrders);
+            PreOrder choosedPreOrder = findPreorderById(idInput, sortLists);
 
             String choiceInput;
             do {
@@ -260,6 +290,9 @@ public class AdminMainHomeView implements MenuService, ProductService {
                     break;
                 }
             }
+            if (choosedProd==null) {
+                System.out.println("Không tìm thấy id này");
+            }
             return choosedProd;
         } catch (Exception e) {
             System.out.println("Định dạng không hợp lệ!");
@@ -276,11 +309,13 @@ public class AdminMainHomeView implements MenuService, ProductService {
                     break;
                 }
             }
+            if (choosedpreOrder==null) {
+                System.out.println("Không tìm thấy id này");
+            }
             return choosedpreOrder;
         } catch (Exception e) {
             System.out.println("Định dạng không hợp lệ");
         }
         return choosedpreOrder;
     }
-    //Có thể dùng generic chỗ này
 }

@@ -15,7 +15,7 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
         Product choosedProduct = choosePhone(scanner, products);
         double rate =phoneStatusChoose(scanner);
 
-        System.out.println("Giá thu mua của chúng tôi cho sản phẩm này là: " + choosedProduct.getPrice()*rate);
+        System.out.println("Giá thu mua của chúng tôi cho sản phẩm này là: " + (int)(choosedProduct.getPrice()*rate));
         System.out.println("Hiện tại, chúng tôi không hỗ trợ thu mua online.\n" +
                 "Nếu bạn đồng ý với gía thu mua trên, xin vui lòng mang điện thoại đến cửa hàng của chúng tôi");
     }

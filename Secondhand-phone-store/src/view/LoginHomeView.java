@@ -26,7 +26,10 @@ public class LoginHomeView implements MenuService {
                 }
                 break;
             case 2:
-                loginLogic.SignUp(scanner,products,users,orders, preOrders);
+                User thisUser = loginLogic.SignUp(scanner,products,users,orders, preOrders);
+                if (thisUser!=null) {
+                    loginLogic.logIn(scanner,products,users,orders,preOrders);
+                }
                 break;
         }
     }
@@ -56,8 +59,8 @@ public class LoginHomeView implements MenuService {
                     "1 - Thay đổi username\n" +
                     "2 - Thay đổi email\n" +
                     "3 - Thay đổi mật khẩu\n" +
-                    "4 - Đăng xuất\n" +
-                    "0 - Thoát chương trình");
+                    "4 - Trở lại trang cá nhân\n" +
+                    "0 - Đăng xuất");
             System.out.println("Mời bạn chọn: ");
             choiceInput = scanner.nextLine();
         } while (!isChoiceOfFiveFunctionValid(choiceInput));
@@ -93,10 +96,16 @@ public class LoginHomeView implements MenuService {
                 System.out.println("Đổi password thành công");
                 break;
             case 4:
-                displayLoginHomeView(scanner,products,users,orders,preOrders);
+                if (thisUser.getRole().equals("ADMIN")) {
+                    AdminMainHomeView adminMainHomeView = new AdminMainHomeView();
+                    adminMainHomeView.displayAdminHomeView(scanner,products,users,thisUser,orders,preOrders);
+                } else {
+                    UserMainHomeView userMainHomeView = new UserMainHomeView();
+                    userMainHomeView.userInfoAccessMenu(scanner,products,users,thisUser,orders,preOrders);
+                }
                 break;
             case 0:
-                System.exit(0);
+                displayLoginHomeView(scanner,products,users,orders,preOrders);
                 break;
         }
         loginActionView(scanner, users, products, orders, thisUser,preOrders);

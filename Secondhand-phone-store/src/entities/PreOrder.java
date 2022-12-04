@@ -55,6 +55,6 @@ public class PreOrder extends Order{
 
     @Override
     public String toString() {
-        return id + "\t\t\t" + orderDate + "\t\t" + user.name + "\t\t\t" + product.getProductName() + "\t\t\t" + newProduct.getProductName()+ "\t\t\t" + quantity + "\t\t" + newProduct.getPrice() + "\t\t\t" + total+ "\t"+ note+"\n";
+        return id + "\t\t\t" + orderDate + "\t\t" + user.name + "\t\t\t" + product.getProductName() + "\t\t\t" + newProduct.getProductName()+ "\t\t\t" + quantity + "\t\t" + newProduct.getPrice() + "\t\t" + total+ "\t"+ note+"\n";
     }
 }

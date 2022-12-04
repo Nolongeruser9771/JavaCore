@@ -25,8 +25,6 @@ public class Main {
         ArrayList<Product> products = new ArrayList<>();
         ArrayList<Product> prods = productData.productData(products);
 
-
-
         while (true) {
             LoginHomeView loginHomeView = new LoginHomeView();
             loginHomeView.displayLoginHomeView(scanner, prods, users, orders,preOrders);

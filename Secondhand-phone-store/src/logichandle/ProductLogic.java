@@ -9,20 +9,24 @@ public class ProductLogic {
     UserMainHomeView userMainHomeView = new UserMainHomeView();
     public Product productInputInfo(Scanner scanner) {
         String proName, proType, proDescrip, proPriceInput, proStockInput;
-        do {
             System.out.println("Mời nhập tên sản phẩm");
             proName = scanner.nextLine();
-            System.out.println("Mời nhập loại sản phẩm");
+            //Chọn loại điện thoại
             proType = userMainHomeView.phoneTypeChoose(scanner);
             System.out.println("Mời nhập mô tả sản phẩm");
             proDescrip = scanner.nextLine();
+        do {
             System.out.println("Mời nhập giá sản phẩm");
             proPriceInput = scanner.nextLine();
+        } while (!isNumberValid(proPriceInput));
+        int proPrice = Integer.parseInt(proPriceInput);
+
+        do{
             System.out.println("Mời nhập số lượng tồn kho sản phẩm");
             proStockInput = scanner.nextLine();
-        } while (!isNumberValid(proPriceInput) && !isNumberValid(proStockInput));
+        } while (!isNumberValid(proStockInput));
         int proStock = Integer.parseInt(proStockInput);
-        int proPrice = Integer.parseInt(proPriceInput);
+
         return new Product(proName,proType,proDescrip,proPrice,proStock);
     }
 
@@ -31,7 +35,7 @@ public class ProductLogic {
             if (Integer.parseInt(number)>=0) {
                 return true;
             }
-            System.out.println("Giá hoặc số lượng không được bé hơn 0");
+            System.out.println("Giá và số lượng không được bé hơn 0");
             return false;
         }catch (Exception e) {
             System.out.println("Dữ liệu không hợp lệ!");
