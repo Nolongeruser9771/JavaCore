@@ -26,8 +26,9 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
         System.out.println("Giá thu mua tham khảo của sản phẩm này là:" + purchasePrice);
         //Chọn điện thoại và tình trạng để biết giá thu mua
         Product newPro;
-        boolean flag = true;
+        boolean flag;
         do {
+            flag = true;
             System.out.println("Chọn hiệu điện thoại bạn muốn đổi");
             newPro = choosePhone(scanner, products);
             if (newPro.getStock()==0) {

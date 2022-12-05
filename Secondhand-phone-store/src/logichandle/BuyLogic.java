@@ -32,6 +32,11 @@ public class BuyLogic implements ProductService, MenuService {
         } while (!flag1);
         //Check stock
         do {
+            if (choosedProd.getStock()==0) {
+                System.out.println("Sản phẩm này đã hết hàng. Mời chọn loại sản phẩm khác");
+                BuyInfoInput(scanner,prods,users,orders,thisUser,sortLists);
+                return;
+            }
             System.out.println("Mời chọn số lượng muốn mua:");
             prodNumInput = scanner.nextLine();
             if (isValidNumber(prodNumInput)) {
@@ -114,7 +119,7 @@ public class BuyLogic implements ProductService, MenuService {
     }
     private boolean isValidNumber(String numberInput) {
         try {
-            return Integer.parseInt(numberInput) > 0;
+            return Integer.parseInt(numberInput) >=0;
         } catch (Exception e) {
             return false;
         }
