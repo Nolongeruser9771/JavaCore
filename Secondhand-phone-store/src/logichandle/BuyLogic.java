@@ -62,7 +62,7 @@ public class BuyLogic implements ProductService, MenuService {
                 System.out.println("Thông tin đơn hàng:");
                 Order order = new Order(thisUser,choosedProd,quantity);
                 orderShow(order);
-                //Check điểm thưởng
+                //Check điểm thưởng (!!!check cận trên)
                 if (thisUser.getRewardPoint()>0) {
                     int usedPoint = rewardPointUse(scanner,thisUser);
                     order.setRewardPoint(usedPoint);
@@ -74,6 +74,7 @@ public class BuyLogic implements ProductService, MenuService {
                 }
                 orders.add(order);
                 thisUser.getOrders().add(order);
+                choosedProd.setStock(choosedProd.getStock()-quantity);
                 System.out.println("Đặt hàng thành công!");
                 break;
             case 2:
