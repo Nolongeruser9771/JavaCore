@@ -163,7 +163,7 @@ public class AdminMainHomeView extends DataService implements MenuService, Produ
         int choice = Integer.parseInt(choiceInput);
         switch (choice) {
         case 1:
-            int purchasePrice, total;
+            int purchasePrice, total, plusReward;
             String note;
             while (true) {
                 try {
@@ -181,10 +181,12 @@ public class AdminMainHomeView extends DataService implements MenuService, Produ
                     preOrder.setNote(note);
 
                     //Set điểm reward
-                    rewardPointCal(purchasePrice,preOrder);
+                    plusReward = rewardPointCal(purchasePrice,preOrder);
+                    preOrder.getUser().setRewardPoint(preOrder.getUser().getRewardPoint() + plusReward);
                     System.out.println("Đã duyệt đơn thành công!");
                     elementShow(preOrder);
-                    System.out.println(preOrder.getUser().getRewardPoint());
+
+
                     break;
                 } catch (Exception e) {
                     System.out.println("Nhập liệu không hợp lệ");
@@ -195,8 +197,8 @@ public class AdminMainHomeView extends DataService implements MenuService, Produ
                 //Chỉnh sửa trạng thái
                 preOrder.setStatus(1);
                 //set điểm reward cho user
-                rewardPointCal(preOrder.getPurchasePrice(),preOrder);
-                System.out.println(preOrder.getUser().getRewardPoint());
+                plusReward =rewardPointCal(preOrder.getPurchasePrice(),preOrder);
+                preOrder.getUser().setRewardPoint(preOrder.getUser().getRewardPoint() + plusReward);
 
                 elementShow(preOrder);
                 System.out.println("Đã duyệt đơn thành công!");
@@ -212,7 +214,6 @@ public class AdminMainHomeView extends DataService implements MenuService, Produ
         } else {
             rewardPointPlus = (int) (preOrder.getTotal() * 0.01);
         }
-        preOrder.getUser().setRewardPoint(preOrder.getUser().getRewardPoint() + rewardPointPlus);
         return rewardPointPlus;
     }
     private ArrayList<PreOrder> preOrdersSortListshow(ArrayList<PreOrder> preOrders){
