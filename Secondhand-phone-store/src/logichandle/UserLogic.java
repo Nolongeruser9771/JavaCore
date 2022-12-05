@@ -1,13 +1,13 @@
 package logichandle;
 
 import entities.*;
-import iService.Show;
+import iService.DataService;
 import view.UserMainHomeView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class UserLogic extends Show {
+public class UserLogic extends DataService {
     public void showOrderInfo(User thisUser) {
         if (thisUser.getOrders().size()!=0) {
             System.out.println("==========================================================================");

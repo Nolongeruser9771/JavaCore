@@ -2,7 +2,7 @@ package iService;
 
 import java.util.ArrayList;
 
-public class Show <E> {
+public class DataService<E> {
     public void listShow(ArrayList<E> lists) {
         lists.forEach(System.out::println);
     }
