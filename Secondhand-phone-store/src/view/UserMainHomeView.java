@@ -23,11 +23,10 @@ public class UserMainHomeView implements MenuService {
                 "Mời bạn chọn");
             choiceInput = scanner.nextLine();
         } while (!isChoiceOfFiveFunctionValid(choiceInput));
-        //Id sản phẩm
         ExchangeAndSaleLogic exchangeAndSaleLogic = new ExchangeAndSaleLogic();
         switch (Integer.parseInt(choiceInput)) {
             case 1:
-                displayBuyMenu(scanner,prods,users,orders,thisUser);
+                displayBuyMenu(scanner,prods,users,orders,thisUser,preOrders);
                 break;
             case 2:
                 exchangeAndSaleLogic.saleInfoInput(scanner,prods);
@@ -38,8 +37,6 @@ public class UserMainHomeView implements MenuService {
             case 4:
                 userInfoAccessMenu(scanner,prods,users,thisUser,orders,preOrders);
                 break;
-                //Thêm quyền xem order
-
             case 0:
                 System.exit(0);
         }
@@ -77,7 +74,7 @@ public class UserMainHomeView implements MenuService {
         }
     }
 
-    public void displayBuyMenu(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, User thisUser) {
+    public void displayBuyMenu(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, User thisUser, ArrayList<PreOrder> preOrders) {
         String choiceInput;
         do {
             System.out.println("Bạn muốn hiển thị sản phẩm theo:\n" +
@@ -88,13 +85,14 @@ public class UserMainHomeView implements MenuService {
         ArrayList<Product> sortLists;
         switch (Integer.parseInt(choiceInput)) {
             case 1:
+                //Tạo ra sortList để khi findID chỉ tìm trong sortLists hiển thị
                 sortLists = displayPriceMenu(scanner,products);
-                buyLogic.BuyInfoInput(scanner,products,users,orders,thisUser,sortLists);
+                buyLogic.BuyInfoInput(scanner,products,users,orders,thisUser,sortLists,preOrders);
                 break;
             case 2:
                 String type = phoneTypeChoose(scanner);
                 sortLists = productShowByType(products,type);
-                buyLogic.BuyInfoInput(scanner,products,users,orders,thisUser,sortLists);
+                buyLogic.BuyInfoInput(scanner,products,users,orders,thisUser,sortLists, preOrders);
                 break;
         }
     }

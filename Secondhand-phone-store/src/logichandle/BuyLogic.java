@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class BuyLogic implements ProductService, MenuService {
 
-    public void BuyInfoInput(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, ArrayList<Order> orders, User thisUser,ArrayList<Product> sortLists) {
+    public void BuyInfoInput(Scanner scanner, ArrayList<Product> prods, ArrayList<User> users, ArrayList<Order> orders, User thisUser,ArrayList<Product> sortLists,ArrayList<PreOrder> preOrders) {
         String idInput, prodNumInput;
         Product choosedProd = null;
         int quantity = 0;
@@ -21,7 +21,7 @@ public class BuyLogic implements ProductService, MenuService {
             System.out.println("Bạn muốn mua sản phẩm nào?");
             System.out.println("Mời nhập id sản phẩm");
             idInput = scanner.nextLine();
-            if (isValidNumber(idInput) && findById(idInput, sortLists) != null) {
+            if (isValidNumberInput(idInput) && findById(idInput, sortLists) != null) {
                 choosedProd = findById(idInput, sortLists);
                 productShow(choosedProd);
                 flag1 = true;
@@ -34,12 +34,12 @@ public class BuyLogic implements ProductService, MenuService {
         do {
             if (choosedProd.getStock()==0) {
                 System.out.println("Sản phẩm này đã hết hàng. Mời chọn loại sản phẩm khác");
-                BuyInfoInput(scanner,prods,users,orders,thisUser,sortLists);
+                BuyInfoInput(scanner,prods,users,orders,thisUser,sortLists,preOrders);
                 return;
             }
             System.out.println("Mời chọn số lượng muốn mua:");
             prodNumInput = scanner.nextLine();
-            if (isValidNumber(prodNumInput)) {
+            if (isValidNumberInput(prodNumInput)) {
                 quantity = Integer.parseInt(prodNumInput);
                 flag2 = stockCheck(choosedProd,quantity);
             } else {
@@ -50,10 +50,13 @@ public class BuyLogic implements ProductService, MenuService {
         String choiceInput;
         do {
             System.out.println("Bạn xác nhận muốn mua sản phẩm này?" + "\n" + choosedProd.getProductName() + "\nSố lượng: " + quantity);
-            System.out.println("1. Có. Tôi muốn mua         2. Không, tôi muốn chọn lại sản phẩm");
+            System.out.println("1. Có. Tôi muốn mua\n" +
+                    "2. Không, tôi muốn chọn lại sản phẩm\n"+
+                    "3. Quay lại Main Menu");
             choiceInput=scanner.nextLine();
-        }while (!isChoiceOfTwoFunctionValid(choiceInput));
+        }while (!isChoiceOfThreeFunctionValid(choiceInput));
 
+        UserMainHomeView mainHomeView = new UserMainHomeView();
         switch (Integer.parseInt(choiceInput)) {
             case 1:
                 System.out.println("Thông tin đơn hàng:");
@@ -75,9 +78,11 @@ public class BuyLogic implements ProductService, MenuService {
                 break;
             case 2:
                 //Quay về HomeView
-                UserMainHomeView mainHomeView = new UserMainHomeView();
-                mainHomeView.displayBuyMenu(scanner,prods,users,orders, thisUser);
+                mainHomeView.displayBuyMenu(scanner,prods,users,orders, thisUser,preOrders);
                 break;
+            case 3:
+                //Quay về User Main Menu
+                mainHomeView.displayHomeMenu(scanner,prods,users,thisUser,orders,preOrders);
         }
     }
 
@@ -88,7 +93,7 @@ public class BuyLogic implements ProductService, MenuService {
             do {
                 System.out.println("Bạn đang có " + thisUser.getRewardPoint() + ". Bạn muốn sử dụng bao nhiêu điểm cho đơn hàng này");
                 usedPointInput = scanner.nextLine();
-            } while (!isValidNumber(usedPointInput));
+            } while (!isValidScoreInput(usedPointInput));
 
             if (Integer.parseInt(usedPointInput) > thisUser.getRewardPoint()) {
                 System.out.println("Số lượng điểm không hợp lệ!");
@@ -117,7 +122,15 @@ public class BuyLogic implements ProductService, MenuService {
         System.out.println("Số lượng tồn kho không đủ! Xin xem lại số lượng hoặc chọn dòng điện thoại khác");
         return false;
     }
-    private boolean isValidNumber(String numberInput) {
+    private boolean isValidNumberInput(String numberInput) {
+        try {
+            return Integer.parseInt(numberInput) >0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean isValidScoreInput(String numberInput) {
         try {
             return Integer.parseInt(numberInput) >=0;
         } catch (Exception e) {
@@ -148,7 +161,17 @@ public class BuyLogic implements ProductService, MenuService {
 
     @Override
     public boolean isChoiceOfThreeFunctionValid(String choiceInput) {
-        return false;
+        try {
+            int choice = Integer.parseInt(choiceInput);
+            if (choice>=1 && choice <=3) {
+                return true;
+            }
+            System.out.println("Lựa chọn không hợp lệ!");
+            return false;
+        } catch (Exception e) {
+            System.out.println("Lựa chọn không hợp lệ!");
+            return false;
+        }
     }
 
     @Override

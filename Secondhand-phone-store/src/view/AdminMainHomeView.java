@@ -56,6 +56,7 @@ public class AdminMainHomeView extends Show implements MenuService, ProductServi
                 if (!isChoiceOfThreeFunctionValid(choiceInput)) {
                     flag = false;
                 } else if (preOrders.size()==0 && Integer.parseInt(choiceInput)==2) {
+                    //Kiểm tra nếu ko có preorder thì không cho duyệt, quay lại menu
                     System.out.println("Hiện tại không có đơn hàng cần phải duyệt!");
                     flag = false;
                 }
@@ -75,6 +76,7 @@ public class AdminMainHomeView extends Show implements MenuService, ProductServi
                     break;
                 case 2:
                     boolean flag1 = false;
+                    //Tạo sortLists gồm các preorder có trạng thái 0 (chưa duyệt) -> hiển thị sortLists
                     do {
                         ArrayList<PreOrder> sortLists = preOrdersSortListshow(preOrders);
                         if (sortLists.size() == 0) {
@@ -190,17 +192,23 @@ public class AdminMainHomeView extends Show implements MenuService, ProductServi
             }
                 break;
             case 2:
+                //Chỉnh sửa trạng thái
                 preOrder.setStatus(1);
+                //set điểm reward cho user
                 rewardPointCal(preOrder.getPurchasePrice(),preOrder);
                 System.out.println(preOrder.getUser().getRewardPoint());
+
+                elementShow(preOrder);
                 System.out.println("Đã duyệt đơn thành công!");
                 break;
             }
         }
     private int rewardPointCal(int purchasePrice, PreOrder preOrder) {
         int rewardPointPlus;
+        //nếu giá mua cao hơn giá bán thì total = 0; reward bằng số chênh lệch;
+        //Nếu giá mua nhỏ hơn giá bán thì total bằng chêch lệch;
         if (purchasePrice > preOrder.getNewProduct().getPrice()) {
-            rewardPointPlus = purchasePrice - preOrder.getNewProduct().getPrice() + (int) (preOrder.getTotal() * 0.01);
+            rewardPointPlus = purchasePrice - preOrder.getNewProduct().getPrice();
         } else {
             rewardPointPlus = (int) (preOrder.getTotal() * 0.01);
         }
@@ -209,6 +217,7 @@ public class AdminMainHomeView extends Show implements MenuService, ProductServi
     }
     private ArrayList<PreOrder> preOrdersSortListshow(ArrayList<PreOrder> preOrders){
         ArrayList<PreOrder> sortLists = new ArrayList<>();
+        //Hiển thị các đơn có status = 0 ;
         preOrders.forEach(p -> {
             if (p.getStatus()==0) {
                 System.out.println(p);

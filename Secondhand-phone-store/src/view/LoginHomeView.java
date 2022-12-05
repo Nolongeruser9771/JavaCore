@@ -27,7 +27,7 @@ public class LoginHomeView implements MenuService {
                 }
                 break;
             case 2:
-                User thisUser = loginLogic.SignUp(scanner,products,users,orders, preOrders);
+                User thisUser = loginLogic.SignUp(scanner,users);
                 //Đăng kí thành công thì cho đăng nhập
                 if (thisUser!=null) {
                     loginLogic.logIn(scanner,products,users,orders,preOrders);

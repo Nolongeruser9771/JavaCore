@@ -1,25 +1,26 @@
 package logichandle;
 
 import entities.*;
+import iService.Show;
 import view.UserMainHomeView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class UserLogic {
+public class UserLogic extends Show {
     public void showOrderInfo(User thisUser) {
         if (thisUser.getOrders().size()!=0) {
             System.out.println("==========================================================================");
             System.out.println("ĐƠN HÀNG ORDER");
             System.out.println("==========================================================================");
-            System.out.println(thisUser.getOrders());
+            listShow(thisUser.getOrders());
             return;
         }
         if (thisUser.getPreOrders().size()!=0) {
             System.out.println("==========================================================================");
             System.out.println("ĐƠN HÀNG PRE-ORDER");
             System.out.println("==========================================================================");
-            System.out.println(thisUser.getPreOrders());
+            listShow(thisUser.getPreOrders());
             return;
         }
         System.out.println("Bạn không có đơn hàng nào");

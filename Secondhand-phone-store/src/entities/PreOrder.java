@@ -9,6 +9,7 @@ public class PreOrder extends Order{
         super(user, oldProduct, quantity);
         this.newProduct = newProduct;
         this.total = setTotal(purchasePrice,newProduct);
+        this.purchasePrice = purchasePrice;
         this.status = 0;
         this.note = note;
     }

@@ -107,6 +107,7 @@ public class ExchangeAndSaleLogic implements MenuService, ProductService {
     }
 
     public double phoneStatusChoose(Scanner scanner) {
+        //Mỗi tình trạng điện thoại tương ứng 1 rate thu mua
         double rate = 0;
         String statusChoiceInput;
         do {

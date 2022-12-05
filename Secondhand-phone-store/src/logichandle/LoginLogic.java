@@ -23,6 +23,7 @@ public class LoginLogic {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 System.out.println("Đăng nhâp thành công!");
                 checkedUser = user;
+                //check role để hiển thị menu
                 if (user.getRole().equals("ADMIN")) {
                     AdminMainHomeView adminMainHomeView = new AdminMainHomeView();
                     adminMainHomeView.displayAdminHomeView(scanner, products, users,user, orders, preOrders);
@@ -40,8 +41,8 @@ public class LoginLogic {
     }
     //Check lại
 
-    public User SignUp(Scanner scanner, ArrayList<Product> products, ArrayList<User> users, ArrayList<Order> orders, ArrayList<PreOrder> preOrders) {
-        String name, phone, address, username = null, password = null, email = null;
+    public User SignUp(Scanner scanner, ArrayList<User> users) {
+        String name, phone, address, username, password, email;
         User thisUser = null;
         do {
             System.out.println("Mời nhập thông tin cá nhân:\n" +
@@ -58,6 +59,7 @@ public class LoginLogic {
             password = scanner.nextLine();
             System.out.println("Mời nhập email:");
             email = scanner.nextLine();
+            //Kiểm tra pass và email hợp lệ
             if (checkValidPassword(password) && checkValidEmail(email)) {
                 if (!checkExistedUsername(username,users) && !checkExistedEmail(email, users)) {
                     System.out.println("Bạn đã đăng kí thành công");
