@@ -21,12 +21,14 @@ public class LoginHomeView implements MenuService {
         switch (Integer.parseInt(choiceInput)) {
             case 1:
                 User checkLogIn = loginLogic.logIn(scanner,products,users,orders, preOrders);
+                //Kiểm tra có user này chưa
                 while (checkLogIn==null) {
                     loginWrongView(scanner,products,users,orders,preOrders);
                 }
                 break;
             case 2:
                 User thisUser = loginLogic.SignUp(scanner,products,users,orders, preOrders);
+                //Đăng kí thành công thì cho đăng nhập
                 if (thisUser!=null) {
                     loginLogic.logIn(scanner,products,users,orders,preOrders);
                 }
@@ -78,20 +80,23 @@ public class LoginHomeView implements MenuService {
                 }
                 break;
             case 2:
-                boolean flag2 = true;
-                while (flag2){
+                String email;
+                do {
                     System.out.println("Mời nhập email mới: ");
-                    String email = scanner.nextLine();
-                    if(!loginLogic.checkExistedEmail(email, users)){
-                        flag2=false;
-                        thisUser.setEmail(email);
-                        System.out.println("Đổi email thành công!");
-                    }
-                }
+                    email = scanner.nextLine();
+                    if (loginLogic.checkValidEmail(email) && !loginLogic.checkExistedEmail(email,users)) {
+                        flag=true;
+                     } else flag = false;
+                } while (!flag);
+                thisUser.setEmail(email);
+                System.out.println("Đổi email thành công!");
                 break;
             case 3:
-                System.out.println("Mời nhập password mới: ");
-                String password = scanner.nextLine();
+                String password;
+                do {
+                    System.out.println("Mời nhập password mới: ");
+                    password = scanner.nextLine();
+                }while (!loginLogic.checkValidPassword(password));
                 thisUser.setPassword(password);
                 System.out.println("Đổi password thành công");
                 break;
