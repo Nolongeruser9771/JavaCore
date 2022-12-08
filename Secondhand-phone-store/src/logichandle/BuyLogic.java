@@ -62,9 +62,9 @@ public class BuyLogic implements ProductService, MenuService {
                 System.out.println("Thông tin đơn hàng:");
                 Order order = new Order(thisUser,choosedProd,quantity);
                 orderShow(order);
-                //Check điểm thưởng (!!!check cận trên)
+                //Check điểm thưởng
                 if (thisUser.getRewardPoint()>0) {
-                    int usedPoint = rewardPointUse(scanner,thisUser);
+                    int usedPoint = rewardPointUse(scanner,thisUser, order.getTotal());
                     order.setRewardPoint(usedPoint);
                     order.setTotal(order.getTotal() - usedPoint);
                     thisUser.setRewardPoint(thisUser.getRewardPoint() - usedPoint + (int) (order.getTotal() * 0.01));
@@ -87,14 +87,14 @@ public class BuyLogic implements ProductService, MenuService {
         }
     }
 
-    private int rewardPointUse(Scanner scanner, User thisUser) {
+    private int rewardPointUse(Scanner scanner, User thisUser, int total) {
         boolean flag = true;
         String usedPointInput;
         do {
             do {
                 System.out.println("Bạn đang có " + thisUser.getRewardPoint() + ". Bạn muốn sử dụng bao nhiêu điểm cho đơn hàng này");
                 usedPointInput = scanner.nextLine();
-            } while (!isValidScoreInput(usedPointInput));
+            } while (!isValidScoreInput(usedPointInput, total));
 
             if (Integer.parseInt(usedPointInput) > thisUser.getRewardPoint()) {
                 System.out.println("Số lượng điểm không hợp lệ!");
@@ -117,7 +117,7 @@ public class BuyLogic implements ProductService, MenuService {
         System.out.println(order);
     }
     private boolean stockCheck(Product choosedProd, int quantity) {
-        if (choosedProd.getStock()>quantity) {
+        if (choosedProd.getStock()>=quantity) {
             return true;
         }
         System.out.println("Số lượng tồn kho không đủ! Xin xem lại số lượng hoặc chọn dòng điện thoại khác");
@@ -131,9 +131,9 @@ public class BuyLogic implements ProductService, MenuService {
         }
     }
 
-    private boolean isValidScoreInput(String numberInput) {
+    private boolean isValidScoreInput(String numberInput, int total) {
         try {
-            return Integer.parseInt(numberInput) >=0;
+            return Integer.parseInt(numberInput) >=0 && Integer.parseInt(numberInput)<=total;
         } catch (Exception e) {
             return false;
         }
