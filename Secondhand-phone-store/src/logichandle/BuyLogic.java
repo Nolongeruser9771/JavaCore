@@ -62,7 +62,7 @@ public class BuyLogic implements ProductService, MenuService {
                 System.out.println("Thông tin đơn hàng:");
                 Order order = new Order(thisUser,choosedProd,quantity);
                 orderShow(order);
-                //Check điểm thưởng
+                //Check điểm thưởng(đã thêm check cận trên)
                 if (thisUser.getRewardPoint()>0) {
                     int usedPoint = rewardPointUse(scanner,thisUser, order.getTotal());
                     order.setRewardPoint(usedPoint);
@@ -88,14 +88,14 @@ public class BuyLogic implements ProductService, MenuService {
     }
 
     private int rewardPointUse(Scanner scanner, User thisUser, int total) {
-        boolean flag = true;
+        boolean flag;
         String usedPointInput;
         do {
             do {
                 System.out.println("Bạn đang có " + thisUser.getRewardPoint() + ". Bạn muốn sử dụng bao nhiêu điểm cho đơn hàng này");
                 usedPointInput = scanner.nextLine();
             } while (!isValidScoreInput(usedPointInput, total));
-
+            flag = true;
             if (Integer.parseInt(usedPointInput) > thisUser.getRewardPoint()) {
                 System.out.println("Số lượng điểm không hợp lệ!");
                 flag = false;
