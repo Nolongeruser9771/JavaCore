@@ -186,7 +186,6 @@ public class AdminMainHomeView extends DataService implements MenuService, Produ
                     System.out.println("Đã duyệt đơn thành công!");
                     elementShow(preOrder);
 
-
                     break;
                 } catch (Exception e) {
                     System.out.println("Nhập liệu không hợp lệ");
